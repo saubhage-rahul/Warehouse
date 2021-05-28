@@ -19,13 +19,13 @@ public class Uom {
 	@Column(name = "u_id")
 	private Integer uid;
 
-	@Column(name = "u_type")
+	@Column(name = "u_type", nullable = false, length = 12)
 	private String uomType;
 
-	@Column(name = "u_model")
+	@Column(name = "u_model", nullable = false, length = 12, unique = true)
 	private String uomModel;
 
-	@Column(name = "u_desc")
+	@Column(name = "u_desc", nullable = false, length = 100, unique = false)
 	private String uomDesc;
 
 }

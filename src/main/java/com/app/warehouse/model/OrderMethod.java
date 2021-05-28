@@ -25,21 +25,21 @@ public class OrderMethod {
 	@Column(name = "order_id")
 	private Integer id;
 
-	@Column(name = "order_mode")
+	@Column(name = "order_mode", nullable = false, length = 10)
 	private String orderMode;
 
-	@Column(name = "order_code")
+	@Column(name = "order_code", nullable = false, length = 13, unique = true)
 	private String orderCode;
 
-	@Column(name = "order_type")
+	@Column(name = "order_type", nullable = false, length = 5)
 	private String orderType;
 
-	@Column(name = "order_desc")
+	@Column(name = "order_desc", nullable = false, length = 100)
 	private String orderDesc;
 
 	@ElementCollection
 	@CollectionTable(name = "order_accept_tab", joinColumns = @JoinColumn(name = "order_id"))
-	@Column(name = "order_accept")
+	@Column(name = "order_accept", nullable = false, length = 20)
 	private Set<String> orderAccept;
 
 }

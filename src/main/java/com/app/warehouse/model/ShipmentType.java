@@ -16,23 +16,23 @@ public class ShipmentType {
 
 	@Id
 	@GeneratedValue(generator = "gen_shipmentType")
-	@SequenceGenerator(name = "gen_shipmentType",sequenceName = "seq_shipmentType")
+	@SequenceGenerator(name = "gen_shipmentType", sequenceName = "seq_shipmentType")
 	@Column(name = "ship_id")
 	private Integer shipId;
 
-	@Column(name = "ship_mode")
+	@Column(name = "ship_mode", nullable = false, length = 10)
 	private String shipMode;
 
-	@Column(name = "ship_code")
+	@Column(name = "ship_code", nullable = false, length = 10, unique = true)
 	private String shipCode;
 
-	@Column(name = "enable_ship")
+	@Column(name = "enable_ship", nullable = false, length = 5)
 	private String enbleShip;
 
-	@Column(name = "ship_grade")
+	@Column(name = "ship_grade", nullable = false, length = 3)
 	private String shipGrade;
 
-	@Column(name = "ship_desc")
+	@Column(name = "ship_desc", nullable = false, length = 100, unique = false)
 	private String shipDesc;
 
 }
