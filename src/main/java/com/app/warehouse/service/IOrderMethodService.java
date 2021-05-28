@@ -1,6 +1,7 @@
 package com.app.warehouse.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.app.warehouse.model.OrderMethod;
 
@@ -27,5 +28,8 @@ public interface IOrderMethodService {
 
 	// Custom Query for Generate Free Chart
 	List<Object[]> generatechartForOrderMethodMode();
+
+	// Integration
+	Map<Integer, String> getOrderMethodIdAndMode();
 
 }

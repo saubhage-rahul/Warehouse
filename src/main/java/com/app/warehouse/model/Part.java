@@ -42,10 +42,14 @@ public class Part {
 
 	@Column(name = "part_desc")
 	private String partDesc;
-	
-	//HAS-A Relationship
+
+	// HAS-A Relationship
 	@ManyToOne
 	@JoinColumn(name = "uom_id_fk")
 	private Uom uom;
+
+	@ManyToOne
+	@JoinColumn(name = "order_id_fk")
+	private OrderMethod orderMethod;
 
 }

@@ -86,7 +86,7 @@
 						</div>
 					</div>
 					<!-- Row#5 -->
-					<!-- Integration and Dynamic DropDown -->
+					<!-- Integration and Dynamic DropDown for UOM -->
 					<div class="row">
 						<div class="col-3">
 							<label>UOM</label>
@@ -100,6 +100,24 @@
 						</div>
 						<div class="col-5">
 							<span id="uomError"></span>
+						</div>
+					</div>
+					
+					<!-- Row#5 -->
+					<!-- Integration and Dynamic DropDown for OrderMethod -->
+					<div class="row">
+						<div class="col-3">
+							<label>OrderMethod</label>
+						</div>
+						<div class="col-4">
+							<select name="orderMethod.id" id="orderMethodId" class="form-control">
+								<option value="">-Select-</option>
+								<option th:each="obj:${orderMethods}" th:value="${obj.key}"
+									th:text="${obj.value}"></option>
+							</select>
+						</div>
+						<div class="col-5">
+							<span id="orderMethodError"></span>
 						</div>
 					</div>
 

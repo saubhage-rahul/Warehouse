@@ -21,4 +21,8 @@ public interface OrderMethodRepository extends JpaRepository<OrderMethod, Intege
 	@Query("select orderMode,count(orderMode) from OrderMethod Group By orderMode")
 	List<Object[]> generatechartForOrderMethodMode();
 
+	// Integration
+	@Query("select id,orderMode from OrderMethod")
+	List<Object[]> getOrderMethodIdAndMode();
+
 }

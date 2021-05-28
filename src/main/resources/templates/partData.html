@@ -24,6 +24,7 @@
 						<th>Cost</th>
 						<th>Currency</th>
 						<th>UOM</th>
+						<th>OrderMethod</th>
 						<th>Note</th>
 						<th>Actions</th>
 					</tr>
@@ -39,6 +40,7 @@
 						<td th:text="${obj.partBaseCost}"></td>
 						<td th:text="${obj.partCurrency}"></td>
 						<td th:text="${obj.uom.uomModel}"></td>
+						<td th:text="${obj.orderMethod.orderMode}"></td>
 						<td th:text="${obj.partDesc}"></td>
 
 						<td>

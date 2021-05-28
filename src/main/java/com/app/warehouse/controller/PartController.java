@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.warehouse.model.Part;
+import com.app.warehouse.service.IOrderMethodService;
 import com.app.warehouse.service.IPartService;
 import com.app.warehouse.service.IUomService;
 
@@ -30,9 +31,18 @@ public class PartController {
 	@Autowired
 	private IUomService Uomservice;
 
+	@Autowired
+	private IOrderMethodService orderMethodService;
+
 	// For Integrations(Dynamic Drop down for UOM)
-	private void commonUI(Model model) {
+	private void commonUIForUOM(Model model) {
 		model.addAttribute("uoms", Uomservice.getUomIdAndModel());
+	}
+	
+	// For Integrations(Dynamic Drop down for OrderMethod)
+	private void commonUIForOrderMethod(Model model)
+	{
+		model.addAttribute("orderMethods", orderMethodService.getOrderMethodIdAndMode());
 	}
 
 	// 1. Part Service
@@ -41,7 +51,8 @@ public class PartController {
 		log.info("Inside savePart():");
 
 		// Dynamic Drop down for UOM
-		commonUI(model);
+		commonUIForUOM(model);
+		commonUIForOrderMethod(model);
 		return "partRegister";
 	}
 
@@ -56,7 +67,8 @@ public class PartController {
 			model.addAttribute("message", msg);
 
 			// Dynamic Drop down for UOM
-			commonUI(model);
+			commonUIForUOM(model);
+			commonUIForOrderMethod(model);
 
 		} catch (Exception e) {
 			log.error("Exception inside savePart():");
