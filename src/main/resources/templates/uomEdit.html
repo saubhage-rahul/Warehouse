@@ -1,0 +1,95 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<!-- Container -->
+	<div class="Container">
+		<!-- Card -->
+		<div class="card">
+			<!-- Card Header -->
+			<div class="card-header bg-primary text-center">
+				<h2 class="text-white">UOM Registration Page!</h2>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form id="uomRegister" th:action="@{/uom/update}" method="POST"
+					th:object="${uom}">
+
+					<div class="row">
+						<div class="col-4">
+							<label>UOM Id</label>
+						</div>
+
+						<div class="col-5">
+							<input type="text" th:field="*{uid}" class="form-control"
+								readonly />
+						</div>
+					</div>
+
+					<!-- 1st Row -->
+					<div class="row">
+						<div class="col-4">
+							<label>UOM Type</label>
+						</div>
+
+						<div class="col-5">
+							<select name="uomType" th:field="*{uomType}">
+								<option value="">-Select-</option>
+								<option value="Packing">Packing</option>
+								<option value="No Packing">No Packing</option>
+								<option value="NA">NA</option>
+							</select>
+						</div>
+
+						<div class="col-3">
+							<span id="uomTypeError"></span>
+						</div>
+					</div>
+					<!-- 2nd Row -->
+					<div class="row">
+						<div class="col-4">
+							<label>UOM Model</label>
+						</div>
+
+						<div class="col-5">
+							<input type="text" th:field="*{uomModel}" class="form-control" />
+						</div>
+
+						<div class="col-3">
+							<span id="uomModelError"></span>
+						</div>
+					</div>
+					<!-- 3rd Row -->
+					<div class="row">
+						<div class="col-4">
+							<label>Description</label>
+						</div>
+
+						<div class="col-5">
+							<textarea th:field="*{uomDesc}" class="form-control"></textarea>
+						</div>
+
+						<div class="col-3">
+							<span id="uomDescError"></span>
+						</div>
+					</div>
+					<input type="submit" value="Update Uom" class="btn btn-success" />
+
+				</form>
+
+			</div>
+			<!-- Card Footer -->
+			<div class="card-footer bg-danger text-center"
+				th:if="${message!=null}">
+				<span class="text-white" th:text="${message}"></span>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/jquery/uom.js}"></script>
+</body>
+
+</html>

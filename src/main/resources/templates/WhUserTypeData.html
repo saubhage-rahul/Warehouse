@@ -1,0 +1,60 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<!-- container -->
+	<div class="container">
+		<!-- Card -->
+		<div class="card">
+			<!-- Card Header -->
+			<div class="card-header bg-primary text-center text-white">
+				<h2>WH User Type Data Page</h2>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<table class="table table-havor">
+					<tr class="bg-warning text-dark">
+						<th>ID</th>
+						<th>Type</th>
+						<th>Code</th>
+						<th>For</th>
+						<th>Email</th>
+						<th>Contact</th>
+						<th>ID Type</th>
+						<th>Other</th>
+						<th>ID Number</th>
+						<th>Actions</th>
+					</tr>
+
+					<tr th:each="obj:${list}">
+						<td th:text="${obj.id}"></td>
+						<td th:text="${obj.userType}"></td>
+						<td th:text="${obj.userCode}"></td>
+						<td th:text="${obj.userFor}"></td>
+						<td th:text="${obj.userEmail}"></td>
+						<td th:text="${obj.userContact}"></td>
+						<td th:text="${obj.userIdType}"></td>
+						<td th:text="${obj.ifOther}"></td>
+						<td th:text="${obj.userIdNum}"></td>
+
+						<td>
+						<a th:href="@{/wh/edit(id=${obj.id})}" class="btn btn-success">Edit</a> | 
+						<a th:href="@{/wh/delete(id=${obj.id})}" class="btn btn-danger">Delete</a>
+						</td>
+
+					</tr>
+				</table>
+			</div>
+			<!-- Card Footer -->
+			<div class="card-footer bg-success text-center text-white"  th:if="${message!=null}">
+				<span th:text="${message}"></span>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

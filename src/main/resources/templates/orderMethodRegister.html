@@ -1,0 +1,252 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<!-- Container -->
+	<div class="Container">
+		<!-- Card -->
+		<div class="card">
+			<!-- Card Header -->
+			<div class="card-header bg-danger text-center text-white">
+				<h2>Welcome to Order Register Page!</h2>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form id="myOrderMethod" th:action="@{/order/save}" method="POST">
+					<!-- Row#1 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Order Mode</label>
+						</div>
+
+						<div class="col-4">
+							<input type="radio" name="orderMode" id="orderMode1" value="Sale" />
+							Sale <input type="radio" name="orderMode" id="orderMode2"
+								value="Purchase" /> Purchase
+						</div>
+
+						<div class="col-5">
+							<span id="orderModeError"></span>
+						</div>
+					</div>
+
+					<!-- Row#2 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Order Code</label>
+						</div>
+
+						<div class="col-4">
+							<input type="text" name="orderCode" id="orderCode"
+								class="form-control" />
+						</div>
+
+						<div class="col-5">
+							<span id="orderCodeError"></span>
+						</div>
+					</div>
+
+					<!-- Row#3 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Order Type</label>
+						</div>
+
+						<div class="col-4">
+							<select name="orderType" id="orderType" class="form-control">
+								<option value="">-Select-</option>
+								<option value="FIFO">FIFO</option>
+								<option value="LIFO">LIFO</option>
+								<option value="FCFO">FCFO</option>
+								<option value="FEFO">FEFO</option>
+							</select>
+						</div>
+						<div class="col-5">
+							<span id="orderTypeError"></span>
+						</div>
+					</div>
+					<!-- Row#4 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Order Accept</label>
+						</div>
+
+						<div class="col-4">
+							<input type="checkbox" name="orderAccept" id="orderAccept1"
+								value="Multi-Model" /> Multi-Model <input type="checkbox"
+								name="orderAccept" id="orderAccept2" value="Accept Return" />
+							Accept Return
+						</div>
+
+						<div class="col-5">
+							<span id="orderAcceptError"></span>
+						</div>
+					</div>
+
+					<!-- Row#5 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Description</label>
+						</div>
+
+						<div class="col-4">
+							<textarea name="orderDesc" id="orderDesc" class="form-control"></textarea>
+						</div>
+
+						<div class="col-5">
+							<span id="orderDescError"></span>
+						</div>
+					</div>
+					<input type="submit" value="Save Order" class="btn btn-success" />
+				</form>
+			</div>
+			<!-- Card Footer -->
+			<div class="card-footer text-center bg-primary"
+				th:if="${message!=null}">
+				<span th:text="${message}" class="text-white"></span>
+			</div>
+		</div>
+	</div>
+	<!-- <script type="text/javascript">
+		$(document).ready(
+				function() {
+					// 1. Hide Error Variable
+
+					$("#orderModeError").hide();
+					$("#orderCodeError").hide();
+					$("#orderTypeError").hide();
+					$("#orderAcceptError").hide();
+					$("#orderDescError").hide();
+
+					// 2. Define Error Variable
+
+					var orderModeError = false;
+					var orderCodeError = false;
+					var orderTypeError = false;
+					var orderAcceptError = false;
+					var orderDescError = false;
+
+					// 3. Define Validate Function
+
+					function validate_orderMode() {
+						var length = $('[name="orderMode"]:checked').length;
+						if (length == 0) {
+							$("#orderModeError").show();
+							$("#orderModeError").html("<b>*Choose Anyone</b>");
+							$("#orderModeError").css('color', 'red');
+							orderModeError = false;
+						} else {
+							$("#orderModeError").hide();
+							orderModeError = true;
+						}
+						return orderModeError;
+					}
+
+					function validate_orderCode() {
+						var val = $("#orderCode").val();
+						if (val == '') {
+							$("#orderCodeError").show();
+							$("#orderCodeError").html("<b>*Enter Code</b>");
+							$("#orderCodeError").css('color', 'red');
+							orderCodeError = false;
+						} else {
+							$("#orderCodeError").hide();
+							orderCodeError = true;
+						}
+						return orderCodeError;
+					}
+
+					function validate_orderType() {
+						var val = $("#orderType").val();
+						if (val == '') {
+							$("#orderTypeError").show();
+							$("#orderTypeError").html(
+									"<b>*Select Order Type</b>");
+							$("#orderTypeError").css('color', 'red');
+							orderTypeError = false;
+						} else {
+							$("#orderTypeError").hide();
+							orderTypeError = true;
+						}
+						return orderTypeError;
+					}
+
+					function validate_orderAccept() {
+						var length = $('[name="orderAccept"]:checked').length;
+						if (length == 0) {
+							$("#orderAcceptError").show();
+							$("#orderAcceptError").html(
+									"<b>*Select Accept Order</b>");
+							$("#orderAcceptError").css('color', 'red');
+							orderAcceptError = false;
+						} else {
+							$("#orderAcceptError").hide();
+							orderAcceptError = true;
+						}
+						return orderAcceptError;
+					}
+
+					function validate_orderDesc() {
+						var val = $("#orderDesc").val();
+						if (val == '') {
+							$("#orderDescError").show();
+							$("#orderDescError").html(
+									"<b>*Enter Description</b>");
+							$("#orderDescError").css('color', 'red');
+							orderDescError = false;
+						} else {
+							$("#orderDescError").hide();
+							orderDescError = true;
+						}
+						return orderDescError;
+					}
+					// 4. Link Action Event
+
+					$('[name="orderMode"]').change(function() {
+						validate_orderMode();
+					});
+
+					$("#orderCode").keyup(function() {
+						validate_orderCode();
+					});
+
+					$("#orderType").change(function() {
+						validate_orderType();
+					});
+
+					$('[name="orderAccept"]').click(function() {
+						validate_orderAccept();
+					});
+
+					$("#orderDesc").keyup(function() {
+						validate_orderDesc();
+					});
+					// 5. On Click Submit 
+
+					$("#myOrderMethod").submit(
+							function() {
+								validate_orderMode();
+								validate_orderCode();
+								validate_orderType();
+								validate_orderAccept();
+								validate_orderDesc();
+
+								if (orderModeError && orderCodeError
+										&& orderTypeError && orderAcceptError
+										&& orderDescError)
+									return true;
+								else
+									return false;
+							})
+				});
+	</script> -->
+
+	<script type="text/javascript" th:src="@{/jquery/orderMethod.js}"></script>
+</body>
+
+</html>

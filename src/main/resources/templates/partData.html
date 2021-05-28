@@ -1,0 +1,60 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+
+</head>
+
+<body>
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-primary text-white text-center">
+				<h3>Part Data Page</h3>
+			</div>
+
+			<div class="card-body">
+
+				<table class="table table-hover">
+					<tr class="bg-info text-white">
+						<th>Id</th>
+						<th>Code</th>
+						<th>Dimension</th>
+						<th>Cost</th>
+						<th>Currency</th>
+						<th>UOM</th>
+						<th>Note</th>
+						<th>Actions</th>
+					</tr>
+					<tr th:each="obj:${list}">
+						<td th:text="${obj.id}"></td>
+						<td th:text="${obj.partCode}"></td>
+						<td>
+						 W: <span th:text="${obj.partWid}"></span>, 
+						 H: <span th:text="${obj.partHt}"></span>, 
+						 L: <span th:text="${obj.partLen}"></span>
+						</td>
+
+						<td th:text="${obj.partBaseCost}"></td>
+						<td th:text="${obj.partCurrency}"></td>
+						<td th:text="${obj.uom.uomModel}"></td>
+						<td th:text="${obj.partDesc}"></td>
+
+						<td>
+						<a th:href="@{/part/edit(id=${obj.id})}" class="btn btn-success">Edit</a> |
+						<a th:href="@{/part/delete(id=${obj.id})}" class="btn btn-danger">Delete</a> 
+						</td>
+
+					</tr>
+				</table>
+			</div>
+
+			<div class="card-footer bg-success text-white"
+				th:if="${message!=null}">
+				<span th:text="${message}"></span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

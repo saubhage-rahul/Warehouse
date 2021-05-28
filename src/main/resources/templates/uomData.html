@@ -1,0 +1,54 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<!-- container -->
+	<div class="container">
+		<!-- Card -->
+		<div class="card">
+			<!-- Card Header -->
+			<div class="card-header bg-info text-center">
+				<h2 class="text-white">UOM Data Page!</h2>
+			</div>
+
+			<!-- Card Body -->
+			<div class="card-body">
+				<a th:href="@{/uom/excel}" class="btn btn-info">Download Excel</a> |
+				<a th:href="@{/uom/chart}" class="btn btn-info">View Chart</a>
+				
+				<table class="table table-havor">
+					<tr class="bg-secondary text-white">
+						<th>ID</th>
+						<th>TYPE</th>
+						<th>MODEL</th>
+						<th>DESCRIPTION</th>
+						<th>ACTIONS</th>
+					</tr>
+
+					<tr th:each="obj:${list}">
+						<td th:text="${obj.uid}"></td>
+						<td th:text="${obj.uomType}"></td>
+						<td th:text="${obj.uomModel}"></td>
+						<td th:text="${obj.uomDesc}"></td>
+						<td><a th:href="@{/uom/edit(id=${obj.uid})}"
+							class="btn btn-success">Edit</a> | <a
+							th:href="@{/uom/delete(id=${obj.uid})}" class="btn btn-danger">Delete</a>
+
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!-- Card Footer -->
+			<div class="card-footer bg-success text-center"
+				th:if="${message!=null}">
+				<span class="text-white" th:text="${message}"></span>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
