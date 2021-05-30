@@ -1,0 +1,67 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">	
+</head>
+
+<body>
+	<!-- Container -->
+	<div class="Container">
+		<!-- Card -->
+		<div class="card">
+			<!-- Card Header -->
+			<div class="card-header bg-primary text-center text-white">
+				<h2>Document Page</h2>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form id="myDocForm" th:action="@{/doc/upload}" method="POST"
+					enctype="multipart/form-data">
+					<!-- Row#1 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Document</label>
+						</div>
+
+						<div class="col-4">
+							<input type="file" name="docObj" id="docObj" class="form-control" />
+						</div>
+
+						<div class="col-5">
+							<span id="docObjError"></span>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-success" >
+                    	Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                    </button>
+				</form>
+
+				<table class="table table-hover">
+					<tr class="bg-info text-white">
+						<th>ID</th>
+						<th>Document Name</th>
+						<th>Actions</th>
+					</tr>
+
+					<tr th:each="obj:${list}">
+						<td th:text="${obj[0]}"></td>
+						<td th:text="${obj[1]}"></td>
+						<td>
+						<a th:href="@{/doc/delete(id=${obj[0]})}" class="btn btn-danger">Delete<i class="fa fa-trash" aria-hidden="true"></i></a> |
+						<a th:href="@{/doc/download(id=${obj[0]})}" class="btn btn-success">Download<i class="fa fa-download" aria-hidden="true"></i></a>
+						</td>
+					</tr>
+					
+				</table>
+			</div>
+			<!-- Card Footer -->
+			<div>
+				<span></span>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
