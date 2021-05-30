@@ -3,6 +3,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -42,8 +43,8 @@
 						<td th:text="${obj.userIdNum}"></td>
 
 						<td>
-						<a th:href="@{/wh/edit(id=${obj.id})}" class="btn btn-success">Edit</a> | 
-						<a th:href="@{/wh/delete(id=${obj.id})}" class="btn btn-danger">Delete</a>
+						<a th:href="@{/wh/edit(id=${obj.id})}" class="btn btn-success">Edit <i class="fa fa-pencil" aria-hidden="true"></i></a> | 
+						<a th:href="@{/wh/delete(id=${obj.id})}" class="btn btn-danger">Delete <i class="fa fa-trash" aria-hidden="true"></i></a>
 						</td>
 
 					</tr>

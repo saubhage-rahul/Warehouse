@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.app.warehouse.Exception.WhUserTypeNotFoundException;
 import com.app.warehouse.model.WhUserType;
 import com.app.warehouse.service.IWhUserTypeService;
+import com.app.warehouse.util.EmailUtil;
 
 @Controller
 @RequestMapping("/wh")
@@ -25,6 +26,9 @@ public class WhUserTypeController {
 
 	@Autowired
 	private IWhUserTypeService service;
+
+	@Autowired
+	private EmailUtil util;
 
 	// 1. Show Register Page
 	@GetMapping("/register")
@@ -39,6 +43,15 @@ public class WhUserTypeController {
 		log.info("Inside saveWhUserType(): ");
 		try {
 			Integer id = service.saveWhUserType(whUserType);
+
+			// Send Email Details by using Thread
+			if (id > 0) {
+				new Thread(() -> {
+					util.sendEmail(whUserType.getUserEmail(), "User Registered",
+							"Hello user:" + "User Code: " + whUserType.getUserCode());
+				}).start();
+			}
+
 			String msg = "WhUserType is Created : " + id;
 			log.debug("WhUserType Inserted : " + msg);
 			model.addAttribute("message", msg);
