@@ -21,4 +21,8 @@ public interface ShipmentTypeRepository extends JpaRepository<ShipmentType, Inte
 	@Query("SELECT shipMode, count(shipMode) from ShipmentType GROUP BY shipMode")
 	List<Object[]> getShipmentTypeModeAndCount();
 
+	// Integration Dynamic DropDown
+	@Query("SELECT shipId, shipCode FROM ShipmentType where enbleShip=:enable")
+	List<Object[]> getShipIdAndShipCodeByEnable(String enable);
+
 }

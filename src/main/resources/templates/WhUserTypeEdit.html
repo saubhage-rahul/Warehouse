@@ -1,13 +1,13 @@
 <html xmlns:th="https://www.thymeleaf.org/">
 
 <head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>WH User Update Page</title>
 </head>
 
 <body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
 	<!-- Container -->
 	<div class="Container">
 		<!-- Card -->
@@ -41,8 +41,9 @@
 						</div>
 
 						<div class="col-4">
-							<input type="radio" th:field="*{userType}" value="Vendor" />
-							Vendor <input type="radio" th:field="*{userType}" value="Customer" />
+							<input type="radio" th:field="*{userType}" id="userType1"
+								value="Vendor" /> Vendor <input type="radio"
+								th:field="*{userType}" id="userType2" value="Customer" />
 							Customer
 						</div>
 
@@ -71,7 +72,8 @@
 						</div>
 
 						<div class="col-4">
-							<input type="text" th:field="*{userFor}" class="form-control" />
+							<input type="text" value="" th:field="*{userFor}"
+								class="form-control" readonly />
 						</div>
 
 						<div class="col-5">
@@ -133,7 +135,8 @@
 						</div>
 
 						<div class="col-4">
-							<input type="text" th:field="*{ifOther}" class="form-control" />
+							<input style="display:none;" type="text" id="ifOther"
+								th:field="*{ifOther}" class="form-control" />
 						</div>
 
 						<div class="col-5">
@@ -154,9 +157,12 @@
 							<span id="userIdNumError"></span>
 						</div>
 					</div>
-					
-					
-					<input type="submit" value="Update User" class="btn btn-success" />
+
+					<button type="submit" class="btn btn-success">
+						Update User <i class="fa fa-pencil" aria-hidden="true"></i>
+					</button>
+
+					<!-- <input type="submit" value="Update User" class="btn btn-success" /> -->
 				</form>
 			</div>
 			<!-- Card Footer -->
@@ -165,24 +171,25 @@
 			</div> -->
 		</div>
 	</div>
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		$(document).ready(
 				function() {
 
 					// 1. Hide Error Variable
 					var val = $("#userTypeError").hide();
 					var val = $("#userCodeError").hide();
-					var val = $("#userForError").hide();
+					/* var val = $("#userForError").hide(); */
 					var val = $("#userEmailError").hide();
 					var val = $("#userContactError").hide();
 					var val = $("#userIdTypeError").hide();
 					var val = $("#ifOtherError").hide();
 					var val = $("#userIdNumError").hide();
+					var val = $("#ifOtherSec").hide();
 
 					// 2. Define Error Variable
 					var userTypeError = false;
 					var userCodeError = false;
-					var userForError = false;
+					/* var userForError = false; */
 					var userEmailError = false;
 					var userContactError = false;
 					var userIdTypeError = false;
@@ -218,7 +225,7 @@
 						return userCodeError;
 					}
 
-					function validate_userFor() {
+					/* function validate_userFor() {
 						var val = $("#userFor").val();
 						if (val == '') {
 							$("#userForError").show();
@@ -230,7 +237,7 @@
 							userForError = true;
 						}
 						return userForError;
-					}
+					} */
 
 					function validate_userEmail() {
 						var val = $("#userEmail").val();
@@ -276,7 +283,7 @@
 						return userIdTypeError;
 					}
 
-					function validate_ifOther() {
+					/* function validate_ifOther() {
 						var val = $("#ifOther").val();
 						if (val == '') {
 							$("#ifOtherError").show();
@@ -288,7 +295,7 @@
 							ifOtherError = true;
 						}
 						return ifOtherError;
-					}
+					}  */
 
 					function validate_userIdNum() {
 						var val = $("#userIdNum").val();
@@ -306,7 +313,12 @@
 					}
 
 					// 4. Link Action Event
-					$('[name="userType"]').change(function() {
+					$('[name="userType"]').click(function() {
+						var val = $('[name="userType"]:checked').val();
+						if (val == "Vendor")
+							$('#userFor').val("Purchase");
+						else if (val == "Customer")
+							$('#userFor').val("Sale");
 						validate_userType();
 					})
 
@@ -314,9 +326,9 @@
 						validate_userCode();
 					})
 
-					$("#userFor").keyup(function() {
+					/* $("#userFor").keyup(function() {
 						validate_userFor();
-					})
+					}) */
 
 					$("#userEmail").keyup(function() {
 						validate_userEmail();
@@ -327,12 +339,17 @@
 					})
 
 					$("#userIdType").change(function() {
+						if ($(this).val() == "Other") {
+							$("#ifOtherSec").show();
+						} else {
+							$("#ifOtherSec").hide();
+						}
 						validate_userIdType();
 					})
 
-					$("#ifOther").keyup(function() {
+					/* $("#ifOther").keyup(function() {
 						validate_ifOther();
-					})
+					}) */
 
 					$("#userIdNum").keyup(function() {
 						validate_userIdNum();
@@ -343,23 +360,24 @@
 							function() {
 								validate_userType();
 								validate_userCode();
-								validate_userFor();
+								/* validate_userFor(); */
 								validate_userEmail();
 								validate_userContact();
 								validate_userIdType();
-								validate_ifOther();
+								/* validate_ifOther(); */
 								validate_userIdNum();
 
 								if (userTypeError && userCodeError
-										&& userForError && userEmailError
-										&& userContactError && userIdTypeError
-										&& ifOtherError && userIdNumError)
+										&& userEmailError && userContactError
+										&& userIdTypeError && userIdNumError)
 									return true;
 								else
 									return false;
 							})
 				});
-	</script>
+	</script> -->
+
+	<script type="text/javascript" th:src="@{/jquery/whUserType.js}"></script>
 </body>
 
 </html>

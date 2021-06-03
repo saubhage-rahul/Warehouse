@@ -1,7 +1,9 @@
 package com.app.warehouse.impl;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,5 +65,17 @@ public class ShipmentTypeServiceImpl implements IShipmentTypeService {
 	@Override
 	public List<Object[]> getShipmentTypeModeAndCount() {
 		return repository.getShipmentTypeModeAndCount();
+	}
+
+	// Integration
+	@Override
+	public Map<Integer, String> getShipIdAndShipCodeByEnable(String enable) {
+		List<Object[]> list = repository.getShipIdAndShipCodeByEnable(enable);
+		Map<Integer, String> map = new HashedMap<>();
+		for (Object[] obj : list) {
+			map.put((Integer) obj[0], (String) obj[1]);
+
+		}
+		return map;
 	}
 }

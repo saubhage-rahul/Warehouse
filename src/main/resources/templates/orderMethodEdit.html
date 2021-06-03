@@ -1,18 +1,19 @@
 <html xmlns:th="https://www.thymeleaf.org/">
 <head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<title>Update Order Method Page</title>
 </head>
 
 <body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
 	<!-- Container -->
 	<div class="Container">
 		<!-- Card -->
 		<div class="card">
 			<!-- Card Header -->
 			<div class="card-header bg-danger text-center text-white">
-				<h2>Update Order Method Page!</h2>
+				<h2>Update Order Method Page</h2>
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
@@ -68,7 +69,7 @@
 						</div>
 
 						<div class="col-4">
-							<select th:field="*{orderType}">
+							<select th:field="*{orderType}" class="form-control">
 								<option value="">-Select-</option>
 								<option value="FIFO">FIFO</option>
 								<option value="LIFO">LIFO</option>
@@ -112,7 +113,11 @@
 							<span id="orderDescError"></span>
 						</div>
 					</div>
-					<input type="submit" value="Update Order" class="btn btn-success" />
+					
+					<button type="submit" class="btn btn-success">
+					Update Order Method <i class="fa fa-pencil" aria-hidden="true"></i>
+					</button>
+					<!-- <input type="submit" value="Update Order" class="btn btn-success" /> -->
 				</form>
 			</div>
 			<!-- Card Footer -->

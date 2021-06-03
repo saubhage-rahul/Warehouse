@@ -1,19 +1,20 @@
 <html xmlns:th="https://www.thymeleaf.org/">
 
 <head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<title>Shipment Type Register Page</title>
 </head>
 
 <body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
 	<!-- Container -->
 	<div class="Container">
 		<!-- Card -->
 		<div class="card">
 			<!-- Card Header -->
-			<div class="card-header text-white bg-dark text-center">
-				<h2>Shipment Type Register Page!</h2>
+			<div class="card-header text-white bg-primary text-center">
+				<h2>Shipment Type Register Page</h2>
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
@@ -100,13 +101,16 @@
 							<span id="shipDescError"></span>
 						</div>
 					</div>
+					<button type="submit" class="btn btn-success">
+						Create Shipment <i class="fa fa-plus" aria-hidden="true"></i>
+					</button>
 
-					<input type="submit" value="Create" class="btn btn-success" />
+					<!-- <input type="submit" value="Create" class="btn btn-success" /> -->
 				</form>
 			</div>
 			<!-- Card Footer -->
-			<div class="card-footer text-center" th:if="${message!=null}">
-				<span class="text-danger" th:text="${message}"></span>
+			<div class="card-footer text-center bg-info" th:if="${message!=null}">
+				<span class="text-white" th:text="${message}"></span>
 			</div>
 		</div>
 	</div>

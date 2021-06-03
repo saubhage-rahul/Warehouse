@@ -2,6 +2,8 @@ package com.app.warehouse.controller;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.warehouse.Exception.WhUserTypeNotFoundException;
 import com.app.warehouse.model.WhUserType;
 import com.app.warehouse.service.IWhUserTypeService;
 import com.app.warehouse.util.EmailUtil;
+import com.app.warehouse.util.WhUserTypeUtil;
 
 @Controller
 @RequestMapping("/wh")
@@ -28,7 +32,13 @@ public class WhUserTypeController {
 	private IWhUserTypeService service;
 
 	@Autowired
-	private EmailUtil util;
+	private EmailUtil emailUtil;
+
+	@Autowired
+	private WhUserTypeUtil whUTypeutil;
+
+	@Autowired
+	private ServletContext context;
 
 	// 1. Show Register Page
 	@GetMapping("/register")
@@ -45,10 +55,11 @@ public class WhUserTypeController {
 			Integer id = service.saveWhUserType(whUserType);
 
 			// Send Email Details by using Thread
+
 			if (id > 0) {
 				new Thread(() -> {
-					util.sendEmail(whUserType.getUserEmail(), "User Registered",
-							"Hello user:" + "User Code: " + whUserType.getUserCode());
+					emailUtil.sendEmail(whUserType.getUserEmail(), "AUTO GENERATED EMAIL",
+							emailUtil.getWhUserTemplateData(whUserType));
 				}).start();
 			}
 
@@ -79,7 +90,7 @@ public class WhUserTypeController {
 	}
 
 	// 4. Common Method Logic
-	public void commonLogic(Model model) {
+	private void commonLogic(Model model) {
 		log.info("Inside commonLogic():");
 
 		List<WhUserType> list = service.getAllWhUserType();
@@ -152,4 +163,74 @@ public class WhUserTypeController {
 		return "WhUserTypeData";
 	}
 
+	// 8. AJEX Validations for WhUserType Code Count
+	@GetMapping("/validate")
+	@ResponseBody
+	public String validateWhUserCode(@RequestParam String code, @RequestParam Integer id) {
+		log.info("Inside validateWhUserTypeCode():");
+		String message = "";
+
+		try {
+			if (id == 0 && service.validateWhUserCode(code))
+				message = code + ",Already Exit";
+			else if (id != 0 && service.validateWhUserCodeAndId(code, id))
+				message = code + ",Already Exist";
+
+		} catch (Exception e) {
+			log.error("Exception inside validateWhUserTypeCode():" + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return message;
+	}
+
+	// 9. AJEX Validations for WhUserType Email Count
+	@GetMapping("/validateEmail")
+	@ResponseBody
+	public String validateWhUserEmail(String email, Integer id) {
+		log.info("Inside validateWhUserEmail():");
+		String message = "";
+		try {
+			if (id == 0 && service.validateWhUserEmail(email))
+
+				message = email + ",Already Exit";
+			else if (id != 0 && service.validateWhUserEmailAndId(email, id))
+
+				message = email + ",Already Exit";
+
+		} catch (Exception e) {
+			log.error("Exception inside validateWhUserEmail():" + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return message;
+	}
+
+	// 10. AJEX Validations for WhUserType ID Number Count
+
+	@GetMapping("/validateIdNumber")
+	@ResponseBody
+	public String validateWhUserIdNumber(@RequestParam String number, @RequestParam Integer id) {
+		log.info("Inside validateWhUserIdNumber():");
+		String message = "";
+		try {
+			if (id == 0 && service.validateWhUserIdNumber(number))
+				message = number + ",Already Exit";
+			else if (id != 0 && service.validateWhUserIdNumberAndId(number, id))
+				message = number + ",Already Exit";
+		} catch (Exception e) {
+			log.error("Exception inside validateWhUserIdNumber():" + e.getMessage());
+			e.printStackTrace();
+		}
+		return message;
+	}
+
+	@GetMapping("/chart")
+	public String generateChart() {
+		log.info("Inside generateChart() :");
+		List<Object[]> list = service.getWhUserTypUserIdTypeChart();
+		String path = context.getRealPath("/");
+		whUTypeutil.generateFreeChart(path, list);
+		return "WhUserIDTypeChart";
+	}
 }

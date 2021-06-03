@@ -44,6 +44,7 @@ public class PartServiceImpl implements IPartService {
 		repository.save(part);
 	}
 
+	// 6. Validations PartCode Count
 	@Override
 	public boolean getPartCount(String code) {
 		return repository.getPartCount(code) > 0;
@@ -52,5 +53,11 @@ public class PartServiceImpl implements IPartService {
 	@Override
 	public boolean getPartCountForEdit(String code, Integer id) {
 		return repository.getPartCountForEdit(code, id) > 0;
+	}
+
+	// 7. Generate Chart for Part Base Currency
+	@Override
+	public List<Object[]> generateChartForPartBaseCurrency() {
+		return repository.generateChartForPartBaseCurrency();
 	}
 }

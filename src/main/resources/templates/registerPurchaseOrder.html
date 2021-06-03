@@ -1,0 +1,140 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+<title>Purchase Order</title>
+</head>
+
+<body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
+	
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-primary text-white text-center">
+				<h3>Purchase Order Register Page</h3>
+			</div>
+			<div class="card-body">
+				<form id="myPoForm" th:action="@{/po/save}" method="POST"
+					th:object="${purchaseOrder}">
+					<!-- Row#1 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Order Code</label>
+						</div>
+						<div class="col-4">
+							<input type="text" name="orderCode" id="orderCode"
+								class="form-control" />
+						</div>
+						<div class="col-5">
+							<span id="orderCodeError"></span>
+						</div>
+					</div>
+
+					<!--Integration Dynamic Drop down -->
+					<div class="row">
+						<div class="col-3">
+							<label>Shipment Code</label>
+						</div>
+						<div class="col-4">
+							<select name="st.shipId" id="stId" class="form-control">
+								<option value="">-Select-</option>
+								<option th:each="obj:${sts}" th:value="${obj.key}"
+									th:text="${obj.value}"></option>
+							</select>
+						</div>
+						<div class="col-5">
+							<span id="stIdError"></span>
+						</div>
+					</div>
+
+					<!--Integration Dynamic Drop down -->
+					<div class="row">
+						<div class="col-3">
+							<label>Vendor</label>
+						</div>
+						<div class="col-4">
+							<select name="vendor.id" id="vendorId" class="form-control">
+								<option value="">-Select-</option>
+								<option th:each="obj:${vendors}" th:value="${obj.key}"
+									th:text="${obj.value}"></option>
+							</select>
+						</div>
+						<div class="col-5">
+							<span id="vendorIdError"></span>
+						</div>
+					</div>
+
+					<!-- Row#2 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Reference Number</label>
+						</div>
+						<div class="col-4">
+							<input name="refNum" id="refNum" class="form-control" />
+						</div>
+						<div class="col-5">
+							<span id="refNumError"></span>
+						</div>
+					</div>
+
+
+					<!-- Row#3 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Quality Check</label>
+						</div>
+						<div class="col-4">
+							<input type="radio" name="qltyChck" id="qltyChck1"
+								value="Required" /> Required <input type="radio"
+								name="qltyChck" id="qltyChck2" value="Not Required" /> Not
+							Required
+						</div>
+						<div class="col-5">
+							<span id="qltyChckError"></span>
+						</div>
+					</div>
+
+					<!-- Row#4 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Default Status</label>
+						</div>
+						<div class="col-4">
+							<input name="status" id="status" class="form-control"
+								value="Open" readonly />
+						</div>
+					</div>
+
+					<!-- Row#5 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Description</label>
+						</div>
+						<div class="col-4">
+							<textarea name="description" id="description"
+								class="form-control"></textarea>
+						</div>
+						<div class="col-5">
+							<span id="descriptionError"></span>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-success">
+						Add Purchase Order <i class="fa fa-plus-square" aria-hidden="true"></i>
+					</button>
+
+				</form>
+			</div>
+
+			<div class="card-footer text-center bg-success"
+				th:if="${message!=null}">
+				<span class="text-white" th:text="${message}"></span>
+			</div>
+		</div>
+		<!-- card end -->
+	</div>
+
+	<!-- <script type="text/javascript" th:src="@{/myjs/po.js}"></script> -->
+
+</body>
+
+</html>

@@ -1,16 +1,18 @@
 <html xmlns:th="https://www.thymeleaf.org/">
 
 <head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<title>PART REGISTER PAGE</title>
 </head>
 
 <body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
+	
 	<div class="container">
 		<div class="card">
 			<div class="card-header bg-primary text-white text-center">
-				<h3>WELCOME TO PART REGISTER PAGE</h3>
+				<h3>PART REGISTER PAGE</h3>
 			</div>
 			<div class="card-body">
 				<form id="myPartForm" th:action="@{/part/save}" method="POST">
@@ -102,7 +104,7 @@
 							<span id="uomError"></span>
 						</div>
 					</div>
-					
+
 					<!-- Row#5 -->
 					<!-- Integration and Dynamic DropDown for OrderMethod -->
 					<div class="row">
@@ -110,7 +112,8 @@
 							<label>OrderMethod</label>
 						</div>
 						<div class="col-4">
-							<select name="orderMethod.id" id="orderMethodId" class="form-control">
+							<select name="orderMethod.id" id="orderMethodId"
+								class="form-control">
 								<option value="">-Select-</option>
 								<option th:each="obj:${orderMethods}" th:value="${obj.key}"
 									th:text="${obj.value}"></option>
@@ -133,7 +136,11 @@
 							<span id="partDescError"></span>
 						</div>
 					</div>
-					<input type="submit" value="Add Part" class="btn btn-success" />
+					<button type="submit" class="btn btn-success">
+						Create <i class="fa fa-plus" aria-hidden="true"></i>
+					</button>
+
+					<!-- <input type="submit" value="Add Part" class="btn btn-success" /> -->
 				</form>
 			</div>
 			<!-- card body end -->

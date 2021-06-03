@@ -1,6 +1,7 @@
 package com.app.warehouse.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.app.warehouse.model.ShipmentType;
 
@@ -27,5 +28,8 @@ public interface IShipmentTypeService {
 
 	// Free Chart
 	List<Object[]> getShipmentTypeModeAndCount();
+	
+	// Integration
+	public Map<Integer,String> getShipIdAndShipCodeByEnable(String enable);
 
 }

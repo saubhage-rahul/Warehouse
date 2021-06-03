@@ -1,19 +1,20 @@
 <html xmlns:th="https://www.thymeleaf.org/">
 
 <head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<title>Shipment Type Edit Page</title>
 </head>
 
 <body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
 	<!-- Container -->
 	<div class="Container">
 		<!-- Card -->
 		<div class="card">
 			<!-- Card Header -->
 			<div class="card-header text-white bg-dark text-center">
-				<h2>Shipment Type Edit Page!</h2>
+				<h2>Shipment Type Edit Page</h2>
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
@@ -24,9 +25,13 @@
 						<div class="col-3">
 							<label>Shipment Id</label>
 						</div>
-						<div class="col-4">
+						<div class="col-5">
 							<input type="text" th:field="*{shipId}" class="form-control"
 								readonly />
+						</div>
+
+						<div class="col-4">
+							<span id="shipIdError"></span>
 						</div>
 					</div>
 					<!-- 1st Row -->
@@ -36,7 +41,8 @@
 						</div>
 
 						<div class="col-5">
-							<select name="shipMode" th:field="*{shipMode}">
+							<select name="shipMode" th:field="*{shipMode}"
+								class="form-control">
 								<option value="">-Select-</option>
 								<option value="Air">Air</option>
 								<option value="Ship">Ship</option>
@@ -107,12 +113,16 @@
 							<span id="shipDescError"></span>
 						</div>
 					</div>
+					
+					<button type="submit" class="btn btn-success">
+					Update Shipment <i class="fa fa-pencil" aria-hidden="true"></i>
+					</button>
 
-					<input type="submit" value="Update" class="btn btn-success" />
+					<!-- <input type="submit" value="Update" class="btn btn-success" /> -->
 				</form>
 			</div>
 			<!-- Card Footer -->
-			
+
 		</div>
 	</div>
 	<script type="text/javascript" th:src="@{/jquery/shipmentType.js}"></script>

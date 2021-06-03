@@ -21,8 +21,12 @@ public interface IPartService {
 	// 5. Update Part
 	public void updatePart(Part part);
 
+	// 6. Validations PartCode Count
 	public boolean getPartCount(String code);
 
 	public boolean getPartCountForEdit(String code, Integer id);
+
+	// 7. Generate Chart for Part Base Currency
+	List<Object[]> generateChartForPartBaseCurrency();
 
 }

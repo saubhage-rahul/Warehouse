@@ -2,6 +2,8 @@ package com.app.warehouse.controller;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import com.app.warehouse.model.Part;
 import com.app.warehouse.service.IOrderMethodService;
 import com.app.warehouse.service.IPartService;
 import com.app.warehouse.service.IUomService;
+import com.app.warehouse.util.PartUtil;
 
 @Controller
 @RequestMapping("/part")
@@ -29,19 +32,20 @@ public class PartController {
 	private IPartService service;
 
 	@Autowired
+	private PartUtil util;
+
+	@Autowired
+	private ServletContext context;
+
+	@Autowired
 	private IUomService Uomservice;
 
 	@Autowired
 	private IOrderMethodService orderMethodService;
 
-	// For Integrations(Dynamic Drop down for UOM)
-	private void commonUIForUOM(Model model) {
+	// For Integrations(Dynamic Drop down)
+	private void commonUI(Model model) {
 		model.addAttribute("uoms", Uomservice.getUomIdAndModel());
-	}
-	
-	// For Integrations(Dynamic Drop down for OrderMethod)
-	private void commonUIForOrderMethod(Model model)
-	{
 		model.addAttribute("orderMethods", orderMethodService.getOrderMethodIdAndMode());
 	}
 
@@ -50,9 +54,10 @@ public class PartController {
 	public String registerPart(Model model) {
 		log.info("Inside savePart():");
 
-		// Dynamic Drop down for UOM
-		commonUIForUOM(model);
-		commonUIForOrderMethod(model);
+		// Dynamic Drop down for integrations
+		// Calling commonUI method
+		commonUI(model);
+
 		return "partRegister";
 	}
 
@@ -66,9 +71,9 @@ public class PartController {
 			log.debug("Paer Created: " + id);
 			model.addAttribute("message", msg);
 
-			// Dynamic Drop down for UOM
-			commonUIForUOM(model);
-			commonUIForOrderMethod(model);
+			// Dynamic Drop down for integrations
+			// Calling commonUI method
+			commonUI(model);
 
 		} catch (Exception e) {
 			log.error("Exception inside savePart():");
@@ -94,7 +99,7 @@ public class PartController {
 		return "partData";
 	}
 
-	// AJEX Call
+	// 6. AJEX Call Validations PartCode Count
 	@GetMapping("/validate")
 	@ResponseBody
 	public String validatePartCode(@RequestParam String code, @RequestParam Integer id) {
@@ -106,6 +111,22 @@ public class PartController {
 		else if (id != 0 && service.getPartCountForEdit(code, id))
 			message = code + ",Already Exist";
 		return message;
+	}
+
+	// 7. Generate Chart
+	@GetMapping("/chart")
+	public String generateChartForBaseCurrency() {
+		log.info("Inside generateChartForBaseCurrency():");
+
+		try {
+			List<Object[]> list = service.generateChartForPartBaseCurrency();
+			String path = context.getRealPath("/");
+			util.generateChartForPartBaseCurrency(path, list);
+		} catch (Exception e) {
+			log.error("Exception inside generateChartForBaseCurrency():");
+			e.printStackTrace();
+		}
+		return "PartChart";
 	}
 
 }

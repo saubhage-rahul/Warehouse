@@ -1,12 +1,13 @@
 <html xmlns:th="https://www.thymeleaf.org/">
 <head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>WH User Type Data Page</title>
 </head>
 
 <body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
+
 	<!-- container -->
 	<div class="container">
 		<!-- Card -->
@@ -17,6 +18,10 @@
 			</div>
 			<!-- Card Body -->
 			<div class="card-body">
+			
+				<!-- <a th:href="@{/wh/chart}" class="btn btn-info">View FreeChart <i
+					class="fa fa-pie-chart" aria-hidden="true"></i></a> -->
+					
 				<table class="table table-havor">
 					<tr class="bg-warning text-dark">
 						<th>ID</th>
@@ -42,16 +47,19 @@
 						<td th:text="${obj.ifOther}"></td>
 						<td th:text="${obj.userIdNum}"></td>
 
-						<td>
-						<a th:href="@{/wh/edit(id=${obj.id})}" class="btn btn-success">Edit <i class="fa fa-pencil" aria-hidden="true"></i></a> | 
-						<a th:href="@{/wh/delete(id=${obj.id})}" class="btn btn-danger">Delete <i class="fa fa-trash" aria-hidden="true"></i></a>
-						</td>
+						<td><a th:href="@{/wh/edit(id=${obj.id})}"
+							class="btn btn-success">Edit <i class="fa fa-pencil"
+								aria-hidden="true"></i></a> | <a
+							th:href="@{/wh/delete(id=${obj.id})}" class="btn btn-danger">Delete
+								<i class="fa fa-trash" aria-hidden="true"></i>
+						</a></td>
 
 					</tr>
 				</table>
 			</div>
 			<!-- Card Footer -->
-			<div class="card-footer bg-success text-center text-white"  th:if="${message!=null}">
+			<div class="card-footer bg-success text-center text-white"
+				th:if="${message!=null}">
 				<span th:text="${message}"></span>
 			</div>
 		</div>
