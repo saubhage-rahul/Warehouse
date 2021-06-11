@@ -1,33 +1,32 @@
 <html xmlns:th="https://www.thymeleaf.org/">
+
 <head>
-<title>Purchase Order Part</title>
+<title>Sale Data Page</title>
 </head>
+
 <body>
-	<div th:insert="fragments/commonUI :: userheader"></div>
-	<div th:insert="fragments/commonUI :: usermenu"></div>
-	<div th:insert="fragments/commonUI :: userfooter"></div>
+	<div th:insert="fragments/commonui :: userheader"></div>
+	<div th:insert="fragments/commonui :: usermenu"></div>
+	<div th:insert="fragments/commonui :: userfooter"></div>
 
-	<!-- Container -->
 	<div class="container">
-		<!-- Card -->
 		<div class="card">
-			<!-- Card Header -->
-			<div class="card-header bg-primary text-center text-white">
-				<h2>Purchase Order Part</h2>
+			<div class="card-header bg-primary text-white text-center">
+				<h3>Sale Order Part Page</h3>
 			</div>
-			<!-- Card Body -->
-			<div class="card-body">
-				<table class="table table-hovar">
-					<tr>
-						<th class="bg-info text-white">Order Code</th>
-						<th th:text="${purchaseOrder.orderCode}"></th>
 
-						<th class="bg-info text-white">Order Status</th>
-						<th th:text="${purchaseOrder.status}"></th>
+			<div class="card-body">
+				<table class="table table-hover">
+					<tr>
+						<th class="bg-info text-white">CODE</th>
+						<th th:text="${saleOrder.orderCode}"></th>
+
+						<th class="bg-info text-white">STATUS</th>
+						<th th:text="${saleOrder.status}"></th>
 					</tr>
 				</table>
 
-				<form th:action="@{/po/addPart}" method="POST">
+				<form th:action="@{/sale/addPart}" method="POST">
 					<div class="row">
 						<div class="col-6">
 							<label>Choose Part</label> <select name="part.id" id="partId"
@@ -41,15 +40,14 @@
 								class="form-control" required min="1" />
 						</div>
 						<div class="col-3">
-							<input type="hidden" name="purchaseOrder.id" id="poId"
-								th:value="${purchaseOrder.id}" />
+							<input type="hidden" name="saleOrder.id" id="poId"
+								th:value="${saleOrder.id}" />
 							<button type="submit" class="btn btn-success">
 								Add <i class="fa fa-plus-square" aria-hidden="true"></i>
 							</button>
 						</div>
 					</div>
 				</form>
-
 				<table class="table table-hover">
 					<tr>
 						<th>Serial No</th>
@@ -64,16 +62,15 @@
 						<td th:text="${obj.part.partBaseCost}"></td>
 						<td th:text="${obj.qty}"></td>
 						<td><a class="btn btn-warning"
-							th:href="@{/po/removePart(purchaseOrderId=${purchaseOrder.id},DetailId=${obj.id})}">Remove
+							th:href="@{/sale/removePart(saleOrderId=${saleOrder.id},detailId=${obj.id})}">Remove
 								<i class="fa fa-minus-circle" aria-hidden="true"></i>
 						</a></td>
 					</tr>
 				</table>
 			</div>
-			<!-- Card Footer -->
-			<!-- <div class="card-footer"></div> -->
 		</div>
+		<!-- card end -->
 	</div>
+	<!-- container end -->
 </body>
-
 </html>

@@ -1,6 +1,8 @@
 package com.app.warehouse.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,7 @@ public class PartServiceImpl implements IPartService {
 
 	@Override
 	public Part getPart(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new PartNotFoundException("Part Exit :" + id));
+		return repository.findById(id).orElseThrow(() -> new PartNotFoundException("Part Exit :"));
 	}
 
 	@Override
@@ -59,5 +61,17 @@ public class PartServiceImpl implements IPartService {
 	@Override
 	public List<Object[]> generateChartForPartBaseCurrency() {
 		return repository.generateChartForPartBaseCurrency();
+	}
+
+	// 8. Integration
+	@Override
+	public Map<Integer, String> getPartIdAndCode() {
+		List<Object[]> list = repository.getPartIdAndCode();
+		Map<Integer, String> map = new LinkedHashMap<>();
+		for (Object[] obj : list) {
+			map.put((Integer) obj[0], (String) obj[1]);
+
+		}
+		return map;
 	}
 }

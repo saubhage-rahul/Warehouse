@@ -42,7 +42,7 @@ public class UomServiceImpl implements IUomService {
 	@Override
 	public Uom getUom(Integer id) {
 
-		return repository.findById(id).orElseThrow(() -> new UomNotFoundException("Uom Not Exit!! :" + id));
+		return repository.findById(id).orElseThrow(() -> new UomNotFoundException("Uom Exit!! :"));
 	}
 
 	// Update UOM

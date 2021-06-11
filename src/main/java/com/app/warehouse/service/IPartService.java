@@ -1,6 +1,7 @@
 package com.app.warehouse.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.app.warehouse.model.Part;
 
@@ -28,5 +29,8 @@ public interface IPartService {
 
 	// 7. Generate Chart for Part Base Currency
 	List<Object[]> generateChartForPartBaseCurrency();
+
+	// 8. Integration
+	public Map<Integer, String> getPartIdAndCode();
 
 }

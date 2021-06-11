@@ -1,6 +1,7 @@
 package com.app.warehouse.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,12 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, In
 
 	@Query("SELECT count(orderCode) FROM PurchaseOrder WHERE orderCode=:code AND id!=:id")
 	Integer validateGetOrderCodeAndId(String code, Integer id);
+
+	// For Status
+	@Query("SELECT status FROM PurchaseOrder WHERE id=:poId")
+	String getCurrentStatusOfPurchaseOrder(Integer poId);
+
+	@Modifying
+	@Query("UPDATE PurchaseOrder SET status=:newStatus WHERE id=:poId")
+	void updatePurchaseOrderStatus(Integer poId, String newStatus);
 }

@@ -1,0 +1,59 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+<title>Sale Order Data</title>
+</head>
+
+<body>
+
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
+
+	<!-- container -->
+	<div class="container">
+		<!-- card -->
+		<div class="card">
+			<!-- card header -->
+			<div class="card-header bg-info text-center text-white">
+				<h2>Sale Order Data Page</h2>
+			</div>
+
+			<!-- card body -->
+			<div class="card-body">
+				<table class="table table-hovar">
+					<tr class="bg-primary text-white">
+						<th>Id</th>
+						<th>Order Code</th>
+						<th>ShipmentType</th>
+						<th>WhUser</th>
+						<th>Reference No</th>
+						<th>Stock Mode</th>
+						<th>Stock Source</th>
+						<th>Default Status</th>
+						<th>Description</th>
+						<th>Actions</th>
+					</tr>
+
+
+					<tr th:each="obj:${list}">
+						<td th:text="${obj.id}"></td>
+						<td th:text="${obj.orderCode}"></td>
+						<td th:text="${obj.st.shipCode}"></td>
+						<td th:text="${obj.customer.userCode}"></td>
+						<td th:text="${obj.refNum}"></td>
+						<td th:text="${obj.stockMode}"></td>
+						<td th:text="${obj.stockSource}"></td>
+						<td th:text="${obj.status}"></td>
+						<td th:text="${obj.description}"></td>
+						<td><a th:href="@{/sale/parts(id=${obj.id})}"
+							class="btn btn-success">Add Part <i class="fa fa-cart-plus"
+								aria-hidden="true"></i></a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

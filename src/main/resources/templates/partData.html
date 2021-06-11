@@ -29,8 +29,8 @@
 						<th>Currency</th>
 						<th>UOM</th>
 						<th>OrderMethod</th>
-						<th>Note</th>
-						<th>Actions</th>
+						<th>Description</th>
+						<!-- <th>Actions</th> -->
 					</tr>
 					<tr th:each="obj:${list}">
 						<td th:text="${obj.id}"></td>
@@ -52,7 +52,7 @@
 								aria-hidden="true"></i></a> | <a
 							th:href="@{/part/delete(id=${obj.id})}" class="btn btn-danger">Delete
 								<i class="fa fa-trash" aria-hidden="true"></i>
-						</a> --> //TODO
+						</a> --> 
 						</td>
 
 					</tr>

@@ -24,5 +24,10 @@ public interface ShipmentTypeRepository extends JpaRepository<ShipmentType, Inte
 	// Integration Dynamic DropDown
 	@Query("SELECT shipId, shipCode FROM ShipmentType where enbleShip=:enable")
 	List<Object[]> getShipIdAndShipCodeByEnable(String enable);
+	
+	
+	
+	
+	
 
 }

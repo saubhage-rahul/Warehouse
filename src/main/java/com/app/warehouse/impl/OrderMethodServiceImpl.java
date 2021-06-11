@@ -47,7 +47,7 @@ public class OrderMethodServiceImpl implements IOrderMethodService {
 	public OrderMethod getorderMethod(Integer id) {
 
 		return repository.findById(id)
-				.orElseThrow(() -> new OrderMethodNotFoundException("OrderMethod not Exit!! : " + id));
+				.orElseThrow(() -> new OrderMethodNotFoundException("OrderMethod Exit!! : "));
 	}
 
 	// 5.Update Order Method

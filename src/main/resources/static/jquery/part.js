@@ -20,7 +20,7 @@ $(document)
 			// 3. define validate function
 			function validate_partCode() {
 				var val = $("#partCode").val();
-				var exp = /^[A-Z\-\s]{4,8}$/;
+				var exp = /^[A-Z\-\s]{8,15}$/;
 				if (val == '') {
 					$("#partCodeError").show();
 					$("#partCodeError").html(
@@ -33,7 +33,7 @@ $(document)
 					$("#partCodeError").show();
 					$("#partCodeError")
 						.html(
-							"<b>*Code must be 4-8 uppercase letters</b>");
+							"<b>*Code must be 8-15 uppercase letters</b>");
 					$("#partCodeError").css('color', 'red');
 					partCodeError = false;
 				}

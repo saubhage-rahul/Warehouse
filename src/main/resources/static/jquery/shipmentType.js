@@ -36,7 +36,7 @@ $(document)
 			// 2nd Function
 			function validate_shipCode() {
 				var val = $("#shipCode").val();
-				var exp = /^[A-Z\-\s]{4,8}$/;
+				var exp = /^[A-Z\-\s]{10,20}$/;
 				if (val == '') {
 					$("#shipCodeError").show();
 					$("#shipCodeError").html("<b>*Please Enter Ship Code</b>");
@@ -44,7 +44,7 @@ $(document)
 					shipCodeError = false;
 				} else if (!exp.test(val)) {
 					$("#shipCodeError").show();
-					$("#shipCodeError").html("*<b>Code</b> must be 4-8 uppercase letters");
+					$("#shipCodeError").html("*<b>Code</b> must be 10-20 uppercase letters");
 					$("#shipCodeError").css('color', 'red');
 					shipCodeError = false;
 				} else {

@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.app.warehouse.constant.PurchaseOrderStatus;
+import com.app.warehouse.model.PurchaseDetails;
 import com.app.warehouse.model.PurchaseOrder;
+import com.app.warehouse.service.IPartService;
 import com.app.warehouse.service.IPurchaseOrderService;
 import com.app.warehouse.service.IShipmentTypeService;
 import com.app.warehouse.service.IWhUserTypeService;
@@ -32,6 +35,9 @@ public class PurchaseOrderController {
 
 	@Autowired
 	private IWhUserTypeService whUserTypeService;
+
+	@Autowired
+	private IPartService partService;
 
 	// Integrations Dynamic Drop Down
 	private void commonUI(Model model) {
@@ -108,8 +114,13 @@ public class PurchaseOrderController {
 
 	// ----------------------------- Screen(#2) -------------------
 
-	// 5. Purchase Order
+	// 5. Common UI FOR Parts
 
+	private void commonUIForParts(Model model) {
+		model.addAttribute("parts", partService.getPartIdAndCode());
+	}
+
+	// 6. Purchase Order
 	@GetMapping("/parts")
 	public String showPurchaseOrderPartPage(@RequestParam Integer id, Model model) {
 		log.info("Inside showPurchaseOrderPartPage():");
@@ -121,8 +132,40 @@ public class PurchaseOrderController {
 			log.error("Exception inside showPurchaseOrderPartPage():" + e.getMessage());
 			e.printStackTrace();
 		}
+		// Dynamic Drop Down for Parts
+		commonUIForParts(model);
+
+		// Fetch All
+		List<PurchaseDetails> list = service.getPurchaseDtlsByPurchaseOrderId(id);
+		model.addAttribute("list", list);
+
 		log.info("About purchaseOrderPart UI Page:");
 		return "purchaseOrderPart";
+	}
+
+	// 7. Add Parts
+	@PostMapping("/addPart")
+	public String addPart(PurchaseDetails purchaseDetails) {
+
+		service.savePurchaseDetails(purchaseDetails);
+		// For Status
+		Integer poId = purchaseDetails.getPurchaseOrder().getId();
+		if (PurchaseOrderStatus.OPEN.name().equals(service.getCurrentStatusOfPurchaseOrder(poId))) {
+			service.updatePurchaseOrderStatus(poId, PurchaseOrderStatus.PICKING.name());
+		}
+
+		return "redirect:parts?id=" + poId;
+	}
+
+	// 8. Remove Parts
+	@GetMapping("/removePart")
+	public String removePart(@RequestParam Integer purchaseOrderId, @RequestParam Integer DetailId) {
+		service.deletePurchaseDetails(DetailId);
+		// For Status
+		if (service.getPurchaseDetailsCountByPurchaseOrderId(purchaseOrderId) == 0) {
+			service.updatePurchaseOrderStatus(purchaseOrderId, PurchaseOrderStatus.OPEN.name());
+		}
+		return "redirect:parts?id=" + purchaseOrderId;
 	}
 
 }

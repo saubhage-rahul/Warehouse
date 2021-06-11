@@ -48,7 +48,7 @@ public class WhUserTypeServiceImpl implements IWhUserTypeService {
 	@Override
 	public WhUserType getWhUserType(Integer id) {
 
-		return repository.findById(id).orElseThrow(() -> new WhUserTypeNotFoundException("WhUserType Exit!! :" + id));
+		return repository.findById(id).orElseThrow(() -> new WhUserTypeNotFoundException("WhUserType Exit!! :"));
 	}
 
 	// 5. Update WhUserType

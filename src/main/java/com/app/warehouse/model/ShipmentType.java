@@ -20,10 +20,10 @@ public class ShipmentType {
 	@Column(name = "ship_id")
 	private Integer shipId;
 
-	@Column(name = "ship_mode", nullable = false, length = 10)
+	@Column(name = "ship_mode", nullable = false, length = 20)
 	private String shipMode;
 
-	@Column(name = "ship_code", nullable = false, length = 10, unique = true)
+	@Column(name = "ship_code", nullable = false, length = 20, unique = true)
 	private String shipCode;
 
 	@Column(name = "enable_ship", nullable = false, length = 5)

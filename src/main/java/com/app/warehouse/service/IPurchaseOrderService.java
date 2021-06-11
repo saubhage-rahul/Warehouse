@@ -2,6 +2,7 @@ package com.app.warehouse.service;
 
 import java.util.List;
 
+import com.app.warehouse.model.PurchaseDetails;
 import com.app.warehouse.model.PurchaseOrder;
 
 public interface IPurchaseOrderService {
@@ -19,5 +20,23 @@ public interface IPurchaseOrderService {
 	boolean validateGetOrderCode(String code);
 
 	boolean validateGetOrderCodeAndId(String code, Integer id);
+
+	// 5. ------------------for screen#2-------------------------------
+
+	// 6. Save Purchase Details
+	public Integer savePurchaseDetails(PurchaseDetails purchaseDetails);
+
+	// 7.
+	public List<PurchaseDetails> getPurchaseDtlsByPurchaseOrderId(Integer id);
+
+	// 8. Remove
+	public void deletePurchaseDetails(Integer detailId);
+
+	// 9. For Status
+	String getCurrentStatusOfPurchaseOrder(Integer poId);
+	
+	public void updatePurchaseOrderStatus(Integer poId, String newStatus);
+	
+	public Integer getPurchaseDetailsCountByPurchaseOrderId(Integer poId);
 
 }

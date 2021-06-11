@@ -22,4 +22,8 @@ public interface PartRepository extends JpaRepository<Part, Integer> {
 	@Query("select partCurrency,count(partCurrency) from Part GROUP BY partCurrency")
 	List<Object[]> generateChartForPartBaseCurrency();
 
+	// 3. Integration
+	@Query("SELECT id,partCode FROM Part")
+	public List<Object[]> getPartIdAndCode();
+
 }
