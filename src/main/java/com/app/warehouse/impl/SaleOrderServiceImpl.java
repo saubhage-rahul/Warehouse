@@ -1,6 +1,7 @@
 package com.app.warehouse.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,6 +88,18 @@ public class SaleOrderServiceImpl implements ISaleOrderService {
 	@Override
 	public Integer getSaleDtlsCountBySaleOrderId(Integer soId) {
 		return saleRepository.getSaleDtlsCountBySaleOrderId(soId);
+	}
+
+	// Increase Part Quantity
+	@Override
+	public Optional<SaleOrderDetails> getSaleDetailByPartIdAndSaleOrderId(Integer partId, Integer soId) {
+		return saleRepository.getSaleDetailByPartIdAndSaleOrderId(partId, soId);
+	}
+
+	@Transactional
+	@Override
+	public Integer updateSaleOrderDetailQtyByDetailId(Integer newQty, Integer dtlId) {
+		return saleRepository.updateSaleOrderDetailQtyByDetailId(newQty, dtlId);
 	}
 
 }

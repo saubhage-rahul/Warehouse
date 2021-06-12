@@ -1,6 +1,7 @@
 package com.app.warehouse.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,6 +92,15 @@ public class PurchaseOrderServiceImpl implements IPurchaseOrderService {
 		return purchaseDtlRepo.getPurchaseDetailsCountByPurchaseOrderId(poId);
 	}
 
-	
+	// 10. Increase Part Quantity
+	@Override
+	public Optional<PurchaseDetails> getPurchaseDetailsByPartIdAndPurchaseOrderId(Integer partId, Integer poId) {
+		return purchaseDtlRepo.getPurchaseDetailsByPartIdAndPurchaseOrderId(partId, poId);
+	}
 
+	@Transactional
+	@Override
+	public Integer updatePurchaseDetailsQtyByDetailId(Integer newQty, Integer dtlId) {
+		return purchaseDtlRepo.updatePurchaseDetailsQtyByDetailId(newQty, dtlId);
+	}
 }

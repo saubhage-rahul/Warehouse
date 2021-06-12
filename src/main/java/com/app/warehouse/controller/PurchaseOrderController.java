@@ -1,6 +1,7 @@
 package com.app.warehouse.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,9 +148,18 @@ public class PurchaseOrderController {
 	@PostMapping("/addPart")
 	public String addPart(PurchaseDetails purchaseDetails) {
 
-		service.savePurchaseDetails(purchaseDetails);
 		// For Status
 		Integer poId = purchaseDetails.getPurchaseOrder().getId();
+		Integer partId = purchaseDetails.getPart().getId();
+
+		// Increase Part Quantity
+		Optional<PurchaseDetails> optional = service.getPurchaseDetailsByPartIdAndPurchaseOrderId(partId, poId);
+		if (optional.isPresent()) {
+			service.updatePurchaseDetailsQtyByDetailId(purchaseDetails.getQty(), optional.get().getId());
+		} else {
+			service.savePurchaseDetails(purchaseDetails);
+		}
+
 		if (PurchaseOrderStatus.OPEN.name().equals(service.getCurrentStatusOfPurchaseOrder(poId))) {
 			service.updatePurchaseOrderStatus(poId, PurchaseOrderStatus.PICKING.name());
 		}
@@ -165,6 +175,20 @@ public class PurchaseOrderController {
 		if (service.getPurchaseDetailsCountByPurchaseOrderId(purchaseOrderId) == 0) {
 			service.updatePurchaseOrderStatus(purchaseOrderId, PurchaseOrderStatus.OPEN.name());
 		}
+		return "redirect:parts?id=" + purchaseOrderId;
+	}
+
+	// 9. Increase Qty
+	@GetMapping("/increaseQty")
+	public String increaseQty(@RequestParam Integer purchaseOrderId, @RequestParam Integer DetailId) {
+		service.updatePurchaseDetailsQtyByDetailId(1, DetailId);
+		return "redirect:parts?id=" + purchaseOrderId;
+	}
+
+	// 10. Decrease Qty
+	@GetMapping("/decreaseQty")
+	public String decreaseQty(@RequestParam Integer purchaseOrderId, @RequestParam Integer DetailId) {
+		service.updatePurchaseDetailsQtyByDetailId(-1, DetailId);
 		return "redirect:parts?id=" + purchaseOrderId;
 	}
 

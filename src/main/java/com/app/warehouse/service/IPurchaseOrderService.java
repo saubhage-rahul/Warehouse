@@ -1,6 +1,7 @@
 package com.app.warehouse.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.app.warehouse.model.PurchaseDetails;
 import com.app.warehouse.model.PurchaseOrder;
@@ -38,5 +39,10 @@ public interface IPurchaseOrderService {
 	public void updatePurchaseOrderStatus(Integer poId, String newStatus);
 	
 	public Integer getPurchaseDetailsCountByPurchaseOrderId(Integer poId);
+	
+	// Increase Part Quantity
+	public Optional<PurchaseDetails> getPurchaseDetailsByPartIdAndPurchaseOrderId(Integer partId, Integer poId);
+	
+	public Integer updatePurchaseDetailsQtyByDetailId(Integer newQty, Integer dtlId);
 
 }

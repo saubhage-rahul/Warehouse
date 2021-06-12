@@ -1,6 +1,7 @@
 package com.app.warehouse.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.app.warehouse.model.SaleOrder;
 import com.app.warehouse.model.SaleOrderDetails;
@@ -35,6 +36,11 @@ public interface ISaleOrderService {
 	public String getCurrentStatusOfSaleOrder(Integer soId);
 
 	public void updateSaleOrderStatus(Integer soId, String newStatus);
-	
+
 	public Integer getSaleDtlsCountBySaleOrderId(Integer soId);
+
+	// Increase Part Quantity
+	public Optional<SaleOrderDetails> getSaleDetailByPartIdAndSaleOrderId(Integer partId, Integer soId);
+
+	public Integer updateSaleOrderDetailQtyByDetailId(Integer newQty, Integer dtlId);
 }
