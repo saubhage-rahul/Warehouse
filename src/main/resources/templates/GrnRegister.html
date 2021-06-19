@@ -1,0 +1,90 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+<title>GRN Register Page</title>
+</head>
+
+<body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
+	<!-- Container -->
+	<div class="Container">
+		<!-- Card -->
+		<div class="card">
+			<!-- Card Header -->
+			<div class="card-header bg-info text-white text-center">
+				<h2>GRN Register Page</h2>
+			</div>
+			<!-- Card Body -->
+			<div class="card-body">
+				<form th:action="@{/grn/register}" method="POST">
+					<!-- Row#1 -->
+					<div class="row">
+						<div class="col-4">
+							<label>GRN Code</label>
+						</div>
+						<div class="col-5">
+							<input type="text" name="grnCode" id="grnCode"
+								class="form-control" />
+						</div>
+						<div class="col-3">
+							<span id="grnCodeError"></span>
+						</div>
+					</div>
+
+					<!-- Row#2 -->
+					<div class="row">
+						<div class="col-4">
+							<label>GRN Type</label>
+						</div>
+						<div class="col-5">
+							<input type="text" name="grnType" id="grnType"
+								class="form-control" />
+						</div>
+						<div class="col-3">
+							<span id="grnTypeError"></span>
+						</div>
+					</div>
+
+					<!-- Row#3 Dynamic Drop down -->
+					<div class="row">
+						<div class="col-4">
+							<label>Order Code</label>
+						</div>
+						<div class="col-5">
+							<select name="po.id" id="poId" class="form-control">
+								<option value="">-Select-</option>
+								<option th:each="obj:${pos}" th:value="${obj.key}"
+									th:text="${obj.value}"></option>
+							</select>
+						</div>
+						<div class="col-3">
+							<span id="Error"></span>
+						</div>
+					</div>
+
+					<!-- Row#4 -->
+					<div class="row">
+						<div class="col-4">
+							<label>Description</label>
+						</div>
+						<div class="col-5">
+							<textarea name="grnDescription" id="grnDescription"
+								class="form-control"></textarea>
+						</div>
+						<div class="col-3">
+							<span id="grnDescriptionError"></span>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-success">
+						Create GRN <i class="fa fa-plus" aria-hidden="true"></i>
+					</button>
+				</form>
+			</div>
+			<!-- Card Footer -->
+			<div class="card-footer"></div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,8 +1,10 @@
 package com.app.warehouse.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,4 +105,17 @@ public class PurchaseOrderServiceImpl implements IPurchaseOrderService {
 	public Integer updatePurchaseDetailsQtyByDetailId(Integer newQty, Integer dtlId) {
 		return purchaseDtlRepo.updatePurchaseDetailsQtyByDetailId(newQty, dtlId);
 	}
+
+	// Integration
+	@Override
+	public Map<Integer, String> findPurchaseOrderIdAndCodeByStatus(String status) {
+		List<Object[]> list = repository.findPurchaseOrderIdAndCodeByStatus(status);
+		Map<Integer, String> map = new HashedMap<>();
+		for (Object[] obj : list) {
+			map.put((Integer) obj[0], (String) obj[1]);
+
+		}
+		return map;
+	}
+
 }

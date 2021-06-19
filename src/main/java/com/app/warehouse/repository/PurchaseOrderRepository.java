@@ -1,5 +1,7 @@
 package com.app.warehouse.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +26,8 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, In
 	@Modifying
 	@Query("UPDATE PurchaseOrder SET status=:newStatus WHERE id=:poId")
 	void updatePurchaseOrderStatus(Integer poId, String newStatus);
+
+	// Integration
+	@Query("SELECT id,orderCode FROM PurchaseOrder WHERE status=:status")
+	List<Object[]> findPurchaseOrderIdAndCodeByStatus(String status);
 }

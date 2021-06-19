@@ -1,6 +1,7 @@
 package com.app.warehouse.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.app.warehouse.model.PurchaseDetails;
@@ -44,5 +45,8 @@ public interface IPurchaseOrderService {
 	public Optional<PurchaseDetails> getPurchaseDetailsByPartIdAndPurchaseOrderId(Integer partId, Integer poId);
 	
 	public Integer updatePurchaseDetailsQtyByDetailId(Integer newQty, Integer dtlId);
+	
+	// Integration
+	Map<Integer,String>findPurchaseOrderIdAndCodeByStatus(String status);
 
 }
