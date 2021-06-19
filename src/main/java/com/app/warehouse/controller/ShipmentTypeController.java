@@ -22,6 +22,7 @@ import com.app.warehouse.model.ShipmentType;
 import com.app.warehouse.service.IShipmentTypeService;
 import com.app.warehouse.util.ShipmentTypeUtil;
 import com.app.warehouse.view.ShipmentTypeExcelView;
+import com.app.warehouse.view.ShipmentTypePDFView;
 
 @Controller
 @RequestMapping("/st")
@@ -205,5 +206,17 @@ public class ShipmentTypeController {
 		String path = context.getRealPath("/");
 		util.generateFreeChart(path, list);
 		return "shipmentTypeFreeChart";
+	}
+
+	// Download PDF
+	@GetMapping("/pdf")
+	public ModelAndView generatePDF() {
+		log.info("Inside generatePDF() :");
+		ModelAndView mav = new ModelAndView();
+		mav.setView(new ShipmentTypePDFView());
+		List<ShipmentType> list = service.fetchAllShipmentType();
+		mav.addObject("list", list);
+
+		return mav;
 	}
 }

@@ -26,7 +26,9 @@
 					</tr>
 				</table>
 
-				<form th:action="@{/sale/addPart}" method="POST">
+				<form
+					th:if="${saleOrder.status == 'READY' || saleOrder.status == 'OPEN'}"
+					th:action="@{/sale/addPart}" method="POST">
 					<div class="row">
 						<div class="col-6">
 							<label>Choose Part</label> <select name="part.id" id="partId"
@@ -54,26 +56,33 @@
 						<th>Part</th>
 						<th>Cost</th>
 						<th>Quantity</th>
-						<th>Actions</th>
+						<th th:if="${saleOrder.status == 'READY'}">Actions</th>
 					</tr>
 					<tr th:each="obj,i:${list}">
 						<td th:text="${i.count}"></td>
 						<td th:text="${obj.part.partCode}"></td>
 						<td th:text="${obj.part.partBaseCost}"></td>
 						<td><span th:text="${obj.qty}"></span> <a
+							th:if="${saleOrder.status == 'READY'}"
 							th:href="@{/sale/increaseQty(saleOrderId=${saleOrder.id},detailId=${obj.id})}"
-							class="btn btn-success">+</a> <span th:if="${obj.qty>1}">
-								<a
+							class="btn btn-success">+</a> <span
+							th:if="${obj.qty>1 &&(saleOrder.status == 'READY')}"> <a
 								th:href="@{/sale/decreaseQty(saleOrderId=${saleOrder.id},detailId=${obj.id})}"
 								class="btn btn-danger">-</a>
 						</span></td>
 
-						<td><a class="btn btn-warning"
+						<td><a th:if="${saleOrder.status == 'READY'}"
+							class="btn btn-warning"
 							th:href="@{/sale/removePart(saleOrderId=${saleOrder.id},detailId=${obj.id})}">Remove
 								<i class="fa fa-minus-circle" aria-hidden="true"></i>
 						</a></td>
 					</tr>
 				</table>
+				<hr />
+				<div th:if="${saleOrder.status=='READY'}">
+					<a th:href="@{/sale/placeOrder(saleOrderId=${saleOrder.id})}"
+						class="btn btn-primary">Place Order</a>
+				</div>
 			</div>
 		</div>
 		<!-- card end -->

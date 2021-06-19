@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.app.warehouse.constant.SaleOrderStatus;
 import com.app.warehouse.model.SaleOrder;
@@ -21,6 +22,7 @@ import com.app.warehouse.service.IPartService;
 import com.app.warehouse.service.ISaleOrderService;
 import com.app.warehouse.service.IShipmentTypeService;
 import com.app.warehouse.service.IWhUserTypeService;
+import com.app.warehouse.view.CustomerInvoicePDFView;
 
 @Controller
 @RequestMapping("/sale")
@@ -133,13 +135,16 @@ public class SaleOrderController {
 			SaleOrder saleOrder = service.getOneSaleOrder(id);
 			model.addAttribute("saleOrder", saleOrder);
 
+			String status = service.getCurrentStatusOfSaleOrder(id);
+			if (SaleOrderStatus.OPEN.name().equals(status) || SaleOrderStatus.READY.name().equals(status)) {
+				// Dynamic Drop Down for Parts
+				commonUIForParts(model);
+			}
+
 		} catch (Exception e) {
 			log.error("Exception inside showSaleOrderPartPage():" + e.getMessage());
 			e.printStackTrace();
 		}
-
-		// Dynamic Drop Down for Parts
-		commonUIForParts(model);
 
 		// Fetch All
 		List<SaleOrderDetails> list = service.getSaleDtlsBySaleOrderId(id);
@@ -156,20 +161,24 @@ public class SaleOrderController {
 
 		// For Status
 		Integer soId = saleOrderDetails.getSaleOrder().getId();
-		Integer partId = saleOrderDetails.getPart().getId();
 
-		// Increase Part Quantity
-		Optional<SaleOrderDetails> optional = service.getSaleDetailByPartIdAndSaleOrderId(partId, soId);
-		if (optional.isPresent()) {
-			service.updateSaleOrderDetailQtyByDetailId(saleOrderDetails.getQty(), optional.get().getId());
-		} else {
-			service.savePurchaseDetails(saleOrderDetails);
+		if (SaleOrderStatus.OPEN.name().equals(service.getCurrentStatusOfSaleOrder(soId))
+				|| SaleOrderStatus.READY.name().equals(service.getCurrentStatusOfSaleOrder(soId))) {
+
+			Integer partId = saleOrderDetails.getPart().getId();
+
+			// Increase Part Quantity
+			Optional<SaleOrderDetails> optional = service.getSaleDetailByPartIdAndSaleOrderId(partId, soId);
+			if (optional.isPresent()) {
+				service.updateSaleOrderDetailQtyByDetailId(saleOrderDetails.getQty(), optional.get().getId());
+			} else {
+				service.savePurchaseDetails(saleOrderDetails);
+			}
+
+			if (SaleOrderStatus.OPEN.name().equals(service.getCurrentStatusOfSaleOrder(soId))) {
+				service.updateSaleOrderStatus(soId, SaleOrderStatus.READY.name());
+			}
 		}
-
-		if (SaleOrderStatus.OPEN.name().equals(service.getCurrentStatusOfSaleOrder(soId))) {
-			service.updateSaleOrderStatus(soId, SaleOrderStatus.READY.name());
-		}
-
 		return "redirect:parts?id=" + soId;
 
 	}
@@ -181,10 +190,14 @@ public class SaleOrderController {
 
 	@GetMapping("/removePart")
 	public String removePart(@RequestParam Integer detailId, @RequestParam Integer saleOrderId) {
-		service.deleteSaleDetails(detailId);
-		// For Status
-		if (service.getSaleDtlsCountBySaleOrderId(saleOrderId) == 0) {
-			service.updateSaleOrderStatus(saleOrderId, SaleOrderStatus.OPEN.name());
+
+		if (SaleOrderStatus.READY.name().equals(service.getCurrentStatusOfSaleOrder(saleOrderId))) {
+
+			service.deleteSaleDetails(detailId);
+			// For Status
+			if (service.getSaleDtlsCountBySaleOrderId(saleOrderId) == 0) {
+				service.updateSaleOrderStatus(saleOrderId, SaleOrderStatus.OPEN.name());
+			}
 		}
 		return "redirect:parts?id=" + saleOrderId;
 	}
@@ -192,6 +205,7 @@ public class SaleOrderController {
 	// 8. Increase Qty
 	@GetMapping("/increaseQty")
 	public String increaseQty(@RequestParam Integer detailId, @RequestParam Integer saleOrderId) {
+		log.info("Inside increaseQty():");
 		service.updateSaleOrderDetailQtyByDetailId(1, detailId);
 		return "redirect:parts?id=" + saleOrderId;
 	}
@@ -199,8 +213,57 @@ public class SaleOrderController {
 	// 9. Decrease Qty
 	@GetMapping("/decreaseQty")
 	public String decreaseQty(@RequestParam Integer detailId, @RequestParam Integer saleOrderId) {
+		log.info("Inside decreaseQty():");
 		service.updateSaleOrderDetailQtyByDetailId(-1, detailId);
 		return "redirect:parts?id=" + saleOrderId;
+	}
+
+	// 10. Place Order
+	@GetMapping("/placeOrder")
+	public String placeOrder(@RequestParam Integer saleOrderId) {
+		log.info("Inside placeOrder():");
+
+		if (SaleOrderStatus.READY.name().equals(service.getCurrentStatusOfSaleOrder(saleOrderId))) {
+
+			service.updateSaleOrderStatus(saleOrderId, SaleOrderStatus.CONFIRM.name());
+		}
+		return "redirect:parts?id=" + saleOrderId;
+	}
+
+	// 11. Cancel Order
+	@GetMapping("/cancelOrder")
+	public String cancelOrder(@RequestParam Integer id) {
+		log.info("Inside cancelOrder():");
+
+		String status = service.getCurrentStatusOfSaleOrder(id);
+		if (SaleOrderStatus.READY.name().equals(status) || SaleOrderStatus.CONFIRM.name().equals(status)
+				|| SaleOrderStatus.OPEN.name().equals(status) || !SaleOrderStatus.CANCELLED.name().equals(status)) {
+			service.updateSaleOrderStatus(id, SaleOrderStatus.CANCELLED.name());
+		}
+		return "redirect:all";
+	}
+
+	// 12. GENERATE ORDER
+	@GetMapping("/generate")
+	public String generateInvoice(@RequestParam Integer id) {
+		log.info("Inside generateInvoice():");
+		service.updateSaleOrderStatus(id, SaleOrderStatus.INVOICED.name());
+		return "redirect:all";
+	}
+
+	// 13. PDF Export
+	@GetMapping("/print")
+	public ModelAndView showCustomerInvoice(@RequestParam Integer id) {
+		log.info("Inside showCustomerInvoice():");
+		ModelAndView mav = new ModelAndView();
+		mav.setView(new CustomerInvoicePDFView());
+
+		List<SaleOrderDetails> list = service.getSaleDtlsBySaleOrderId(id);
+		mav.addObject("list", list);
+
+		SaleOrder saleOrder = service.getOneSaleOrder(id);
+		mav.addObject("saleOrder", saleOrder);
+		return mav;
 	}
 
 }

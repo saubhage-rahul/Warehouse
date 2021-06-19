@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.app.warehouse.constant.PurchaseOrderStatus;
 import com.app.warehouse.model.PurchaseDetails;
@@ -21,6 +22,7 @@ import com.app.warehouse.service.IPartService;
 import com.app.warehouse.service.IPurchaseOrderService;
 import com.app.warehouse.service.IShipmentTypeService;
 import com.app.warehouse.service.IWhUserTypeService;
+import com.app.warehouse.view.VendorInvoicePDFView;
 
 @Controller
 @RequestMapping("/po")
@@ -129,12 +131,16 @@ public class PurchaseOrderController {
 		try {
 			PurchaseOrder purchaseOrder = service.getOnePurchaseOrder(id);
 			model.addAttribute("purchaseOrder", purchaseOrder);
+
+			String status = service.getCurrentStatusOfPurchaseOrder(id);
+			if (PurchaseOrderStatus.OPEN.name().equals(status) || PurchaseOrderStatus.PICKING.name().equals(status)) {
+				// Dynamic Drop Down for Parts
+				commonUIForParts(model);
+			}
 		} catch (Exception e) {
 			log.error("Exception inside showPurchaseOrderPartPage():" + e.getMessage());
 			e.printStackTrace();
 		}
-		// Dynamic Drop Down for Parts
-		commonUIForParts(model);
 
 		// Fetch All
 		List<PurchaseDetails> list = service.getPurchaseDtlsByPurchaseOrderId(id);
@@ -148,32 +154,42 @@ public class PurchaseOrderController {
 	@PostMapping("/addPart")
 	public String addPart(PurchaseDetails purchaseDetails) {
 
+		log.info("Inside addPart():");
+
 		// For Status
 		Integer poId = purchaseDetails.getPurchaseOrder().getId();
-		Integer partId = purchaseDetails.getPart().getId();
+		if (PurchaseOrderStatus.OPEN.name().equals(service.getCurrentStatusOfPurchaseOrder(poId))
+				|| PurchaseOrderStatus.PICKING.name().equals(service.getCurrentStatusOfPurchaseOrder(poId))) {
 
-		// Increase Part Quantity
-		Optional<PurchaseDetails> optional = service.getPurchaseDetailsByPartIdAndPurchaseOrderId(partId, poId);
-		if (optional.isPresent()) {
-			service.updatePurchaseDetailsQtyByDetailId(purchaseDetails.getQty(), optional.get().getId());
-		} else {
-			service.savePurchaseDetails(purchaseDetails);
+			Integer partId = purchaseDetails.getPart().getId();
+
+			// Increase Part Quantity
+			Optional<PurchaseDetails> optional = service.getPurchaseDetailsByPartIdAndPurchaseOrderId(partId, poId);
+			if (optional.isPresent()) {
+				service.updatePurchaseDetailsQtyByDetailId(purchaseDetails.getQty(), optional.get().getId());
+			} else {
+				service.savePurchaseDetails(purchaseDetails);
+			}
+
+			if (PurchaseOrderStatus.OPEN.name().equals(service.getCurrentStatusOfPurchaseOrder(poId))) {
+				service.updatePurchaseOrderStatus(poId, PurchaseOrderStatus.PICKING.name());
+			}
 		}
-
-		if (PurchaseOrderStatus.OPEN.name().equals(service.getCurrentStatusOfPurchaseOrder(poId))) {
-			service.updatePurchaseOrderStatus(poId, PurchaseOrderStatus.PICKING.name());
-		}
-
 		return "redirect:parts?id=" + poId;
 	}
 
 	// 8. Remove Parts
 	@GetMapping("/removePart")
 	public String removePart(@RequestParam Integer purchaseOrderId, @RequestParam Integer DetailId) {
-		service.deletePurchaseDetails(DetailId);
-		// For Status
-		if (service.getPurchaseDetailsCountByPurchaseOrderId(purchaseOrderId) == 0) {
-			service.updatePurchaseOrderStatus(purchaseOrderId, PurchaseOrderStatus.OPEN.name());
+
+		log.info("Inside removePart():");
+
+		if (PurchaseOrderStatus.PICKING.name().equals(service.getCurrentStatusOfPurchaseOrder(purchaseOrderId))) {
+			service.deletePurchaseDetails(DetailId);
+			// For Status
+			if (service.getPurchaseDetailsCountByPurchaseOrderId(purchaseOrderId) == 0) {
+				service.updatePurchaseOrderStatus(purchaseOrderId, PurchaseOrderStatus.OPEN.name());
+			}
 		}
 		return "redirect:parts?id=" + purchaseOrderId;
 	}
@@ -181,6 +197,7 @@ public class PurchaseOrderController {
 	// 9. Increase Qty
 	@GetMapping("/increaseQty")
 	public String increaseQty(@RequestParam Integer purchaseOrderId, @RequestParam Integer DetailId) {
+		log.info("Inside increaseQty():");
 		service.updatePurchaseDetailsQtyByDetailId(1, DetailId);
 		return "redirect:parts?id=" + purchaseOrderId;
 	}
@@ -188,8 +205,57 @@ public class PurchaseOrderController {
 	// 10. Decrease Qty
 	@GetMapping("/decreaseQty")
 	public String decreaseQty(@RequestParam Integer purchaseOrderId, @RequestParam Integer DetailId) {
+		log.info("Inside decreaseQty():");
 		service.updatePurchaseDetailsQtyByDetailId(-1, DetailId);
 		return "redirect:parts?id=" + purchaseOrderId;
 	}
 
+	// 11. Place Order
+	@GetMapping("/placeOrder")
+	public String placeOrder(@RequestParam Integer purchaseOrderId) {
+		log.info("Inside placeOrder():");
+
+		if (PurchaseOrderStatus.PICKING.name().equals(service.getCurrentStatusOfPurchaseOrder(purchaseOrderId))) {
+
+			service.updatePurchaseOrderStatus(purchaseOrderId, PurchaseOrderStatus.ORDERED.name());
+		}
+		return "redirect:parts?id=" + purchaseOrderId;
+	}
+
+	// 12. Cancel Order
+	@GetMapping("/cancelOrder")
+	public String cancelOrder(@RequestParam Integer id) {
+		log.info("Inside cancelOrder():");
+
+		String status = service.getCurrentStatusOfPurchaseOrder(id);
+		if (PurchaseOrderStatus.PICKING.name().equals(status) || PurchaseOrderStatus.ORDERED.name().equals(status)
+				|| PurchaseOrderStatus.OPEN.name().equals(status)
+				|| !PurchaseOrderStatus.CANCELLED.name().equals(status)) {
+			service.updatePurchaseOrderStatus(id, PurchaseOrderStatus.CANCELLED.name());
+		}
+		return "redirect:all";
+	}
+
+	// 13. GENERATE ORDER
+	@GetMapping("/generate")
+	public String generateInvoice(@RequestParam Integer id) {
+		log.info("Inside generateInvoice():");
+		service.updatePurchaseOrderStatus(id, PurchaseOrderStatus.INVOICED.name());
+		return "redirect:all";
+	}
+
+	// 14. PDF Export
+	@GetMapping("/print")
+	public ModelAndView showVendorInvoice(@RequestParam Integer id) {
+		log.info("Inside showVendorInvoice():");
+		ModelAndView mav = new ModelAndView();
+		mav.setView(new VendorInvoicePDFView());
+
+		List<PurchaseDetails> list = service.getPurchaseDtlsByPurchaseOrderId(id);
+		mav.addObject("list", list);
+
+		PurchaseOrder purchaseOrder = service.getOnePurchaseOrder(id);
+		mav.addObject("purchaseOrder", purchaseOrder);
+		return mav;
+	}
 }
