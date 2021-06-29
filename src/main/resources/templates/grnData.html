@@ -1,0 +1,46 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+<title>GRN Data Page</title>
+</head>
+
+<body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
+
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-primary text-white text-center">
+				<h3>GRN Data Page</h3>
+			</div>
+
+			<div class="card-body">
+				<table class="table table-hover">
+					<tr class="bg-info text-white">
+						<th>Id</th>
+						<th>Code</th>
+						<th>Type</th>
+						<th>Purchase Order</th>
+						<th>Description</th>
+						<th>Actions</th>
+					</tr>
+					<tr th:each="obj:${list}">
+						<td th:text="${obj.id}"></td>
+						<td th:text="${obj.grnCode}"></td>
+						<td th:text="${obj.grnType}"></td>
+						<td th:text="${obj.po.orderCode}"></td>
+						<td th:text="${obj.grnDescription}"></td>
+						<td><a th:href="@{/grn/parts(id=${obj.id})}"
+							class="btn btn-success">Part <i class="fa fa-cart-plus"
+								aria-hidden="true"></i></a></td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+		<!-- card end -->
+	</div>
+	<!-- container end -->
+</body>
+</html>

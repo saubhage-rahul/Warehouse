@@ -1,6 +1,7 @@
 package com.app.warehouse.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.app.warehouse.model.SaleOrder;
@@ -43,4 +44,7 @@ public interface ISaleOrderService {
 	public Optional<SaleOrderDetails> getSaleDetailByPartIdAndSaleOrderId(Integer partId, Integer soId);
 
 	public Integer updateSaleOrderDetailQtyByDetailId(Integer newQty, Integer dtlId);
+
+	// Integration
+	Map<Integer, String> findSaleOrderIdAndCodeByStatus(String status);
 }

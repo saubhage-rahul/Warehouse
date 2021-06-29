@@ -12,4 +12,6 @@ public interface IGrnService {
 
 	public Grn getOneGrn(Integer id);
 
+	public void updateGrnDtlStatus(Integer id, String status);
+
 }

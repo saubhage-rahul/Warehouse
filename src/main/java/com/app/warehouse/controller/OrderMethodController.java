@@ -51,7 +51,7 @@ public class OrderMethodController {
 		log.info("Inside saveOrderMethod():");
 		try {
 			Integer id = service.saveOrderMethod(orderMethod);
-			String msg = "Oeder Created : " + id;
+			String msg = "Order Created : " + id;
 			model.addAttribute("message", msg);
 			log.debug(msg);
 		} catch (Exception e) {

@@ -6,28 +6,29 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "grn_dtl_tab")
-public class GrnDtl {
+@Table(name = "shiping_dtl_tab")
+public class ShipingDtl {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "grn_dtl_id")
+	@Column(name = "shiping_dtl_id")
 	private Integer id;
 
-	@Column(name = "grn_dtl_code")
+	@Column(name = "shiping_dtl_code")
 	private String partCode;
 
-	@Column(name = "grn_dtl_cost")
+	@Column(name = "shiping_dtl_cost")
 	private Double baseCost;
 
-	@Column(name = "grn_dtl_qty")
+	@Column(name = "shiping_dtl_qty")
 	private Integer qty;
 
-	@Column(name = "grn_dtl_status")
+	@Column(name = "shiping_dtl_status")
 	private String status;
 
 }
