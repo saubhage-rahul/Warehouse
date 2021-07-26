@@ -48,13 +48,18 @@ public class WhUserTypeServiceImpl implements IWhUserTypeService {
 	@Override
 	public WhUserType getWhUserType(Integer id) {
 
-		return repository.findById(id).orElseThrow(() -> new WhUserTypeNotFoundException("WhUserType Exit!! :"));
+		return repository.findById(id)
+				.orElseThrow(() -> new WhUserTypeNotFoundException("WhUserType Not Exit!! : + id"));
 	}
 
 	// 5. Update WhUserType
 	@Override
 	public void updateWhUserType(WhUserType whUserType) {
-		repository.save(whUserType);
+		if (whUserType.getId() == null || !repository.existsById(whUserType.getId())) {
+			throw new WhUserTypeNotFoundException("WhUserType is Not Exit : " + whUserType.getId());
+		} else {
+			repository.save(whUserType);
+		}
 	}
 
 	// 6. WhUserType Code Count

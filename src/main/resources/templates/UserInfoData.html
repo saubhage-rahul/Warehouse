@@ -1,0 +1,45 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+<title>User Info Data Page</title>
+</head>
+
+<body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
+
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-primary text-white text-center">
+				<h3>User Info Data Page</h3>
+			</div>
+
+			<div class="card-body">
+				<table class="table table-hover">
+					<tr class="bg-info text-white">
+						<th>Name</th>
+						<th>Email</th>
+						<th>Status</th>
+						<th>Actions</th>
+					</tr>
+					<tr th:each="obj:${list}">
+						<td th:text="${obj.name}"></td>
+						<td th:text="${obj.email}"></td>
+						<td th:text="${obj.mode}"></td>
+						<td th:if="${obj.name!=session.currentUser.name}"><a
+							th:if="${obj.mode.name()!='ENABLED'}"
+							th:href="@{/user/enable(id=${obj.id})}" class="btn btn-success">Enable</a>
+							<a th:if="${obj.mode.name()!='DISABLED'}"
+							th:href="@{/user/disable(id=${obj.id})}" class="btn btn-danger">Disable</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+		<!-- card end -->
+	</div>
+	<!-- container end -->
+</body>
+</html>

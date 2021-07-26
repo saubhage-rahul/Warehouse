@@ -45,6 +45,6 @@ public class DocumentServiceImpl implements IDocumentService {
 	@Override
 	public Document getDocumentById(Integer id) {
 
-		return repository.findById(id).orElseThrow(() -> new DocumentNotFoundException("Document Exist:"));
+		return repository.findById(id).orElseThrow(() -> new DocumentNotFoundException("Document Not Exist:" + id));
 	}
 }

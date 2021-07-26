@@ -42,14 +42,18 @@ public class ShipmentTypeServiceImpl implements IShipmentTypeService {
 	@Override
 	public ShipmentType getShipmentType(Integer id) {
 		return repository.findById(id)
-				.orElseThrow(() -> new ShipmentTypeNotFoundException("ShipmentType Exit!! :"));
+				.orElseThrow(() -> new ShipmentTypeNotFoundException("ShipmentType Not Exit!! : + id"));
 	}
 
 	// Update ShipmentType
 	@Override
 	public void updateShipmentType(ShipmentType shipmentType) {
-		repository.save(shipmentType);
 
+		if (shipmentType.getShipId() == null || !repository.existsById(shipmentType.getShipId())) {
+			throw new ShipmentTypeNotFoundException("Shipment Type Not Exit : " + shipmentType.getShipId());
+		} else {
+			repository.save(shipmentType);
+		}
 	}
 
 	@Override

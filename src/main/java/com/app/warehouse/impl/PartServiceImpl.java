@@ -38,7 +38,7 @@ public class PartServiceImpl implements IPartService {
 
 	@Override
 	public Part getPart(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new PartNotFoundException("Part Exit :"));
+		return repository.findById(id).orElseThrow(() -> new PartNotFoundException("Part Not Exit :" + id));
 	}
 
 	@Override

@@ -39,7 +39,6 @@ public class OrderMethodServiceImpl implements IOrderMethodService {
 	public void deleteOrderMethod(Integer id) {
 		repository.delete(getorderMethod(id));
 
-		/* repository.deleteById(id); */
 	}
 
 	// 4.Get Order Method based on id
@@ -47,14 +46,17 @@ public class OrderMethodServiceImpl implements IOrderMethodService {
 	public OrderMethod getorderMethod(Integer id) {
 
 		return repository.findById(id)
-				.orElseThrow(() -> new OrderMethodNotFoundException("OrderMethod Exit!! : "));
+				.orElseThrow(() -> new OrderMethodNotFoundException("OrderMethod Not Exit!! : " + id));
 	}
 
 	// 5.Update Order Method
 	@Override
 	public void updateOrderMethod(OrderMethod orderMethod) {
-		repository.save(orderMethod);
-
+		if (orderMethod.getId() == null || !repository.existsById(orderMethod.getId())) {
+			throw new OrderMethodNotFoundException("Order Method not Exist: " + orderMethod.getId());
+		} else {
+			repository.save(orderMethod);
+		}
 	}
 
 	@Override

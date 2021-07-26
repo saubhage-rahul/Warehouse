@@ -33,7 +33,7 @@ public class ShipingServiceImpl implements IShipingService {
 
 	@Override
 	public Shiping getOneShiping(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new ShipingNotFoundException("Shiping Not Exit:"));
+		return repository.findById(id).orElseThrow(() -> new ShipingNotFoundException("Shiping Not Exit:" + id));
 	}
 
 	@Override

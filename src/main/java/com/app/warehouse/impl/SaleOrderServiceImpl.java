@@ -41,7 +41,7 @@ public class SaleOrderServiceImpl implements ISaleOrderService {
 	@Override
 	public SaleOrder getOneSaleOrder(Integer id) {
 
-		return repository.findById(id).orElseThrow(() -> new SaleOrderNotFoundExceptio("Sale Order Exit"));
+		return repository.findById(id).orElseThrow(() -> new SaleOrderNotFoundExceptio("Sale Order Not Exit:" + id));
 	}
 
 	// 4. Validate OrderCode(AJEX Validation)

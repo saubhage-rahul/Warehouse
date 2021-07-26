@@ -41,7 +41,7 @@ public class PurchaseOrderServiceImpl implements IPurchaseOrderService {
 	@Override
 	public PurchaseOrder getOnePurchaseOrder(Integer id) {
 
-		return repository.findById(id).orElseThrow(() -> new PurchaseOrderException("PurchaseOrder Exit:"));
+		return repository.findById(id).orElseThrow(() -> new PurchaseOrderException("PurchaseOrder Not Exit:" + id));
 	}
 
 	// 4. AJEX Validations for Purchase OrderCode

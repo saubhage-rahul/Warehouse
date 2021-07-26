@@ -1,0 +1,94 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+<title>User Register Page</title>
+</head>
+
+<body>
+	<div th:insert="fragments/commonUI :: userheader"></div>
+	<div th:insert="fragments/commonUI :: usermenu"></div>
+	<div th:insert="fragments/commonUI :: userfooter"></div>
+
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-primary text-white text-center">
+				<h3>Welcome to User Registration Page!</h3>
+			</div>
+			<div class="card-body">
+				<form id="myUserForm" th:action="@{/user/create}" method="POST">
+					<!-- Row#1 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Name</label>
+						</div>
+						<div class="col-4">
+							<input name="name" id="name" class="form-control" />
+						</div>
+						<div class="col-5">
+							<span id="nameError"></span>
+						</div>
+					</div>
+
+					<!-- Row#2 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Email</label>
+						</div>
+						<div class="col-4">
+							<input name="email" id="email" class="form-control" />
+						</div>
+						<div class="col-5">
+							<span id="emailError"></span>
+						</div>
+					</div>
+
+					<!-- Row#3 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Password</label>
+						</div>
+						<div class="col-4">
+							<input type="password" value="**************" name="password"
+								id="password" class="form-control" readonly />
+						</div>
+						<div class="col-5">
+							<span id="passwordError"></span>
+						</div>
+					</div>
+
+					<!-- Row#4 -->
+					<div class="row">
+						<div class="col-3">
+							<label>Roles</label>
+						</div>
+						<div class="col-4">
+							<select name="roles" multiple class="form-control">
+								<option th:each="obj:${rolesMap}" th:value="${obj.key}"
+									th:text="${obj.value}"></option>
+							</select>
+						</div>
+						<div class="col-5">
+							<span id="rolesError"></span>
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-success">
+						Create <i class="fa fa-plus-square" aria-hidden="true"></i>
+					</button>
+
+				</form>
+			</div>
+			<!-- card body end -->
+			<div class="card-footer text-center bg-dark" th:if="${message!=null}">
+				<span class="text-success text-white" th:text="${message}"></span>
+			</div>
+			<!--  footer end -->
+		</div>
+		<!-- card end -->
+	</div>
+	<!-- container end -->
+	<!-- <script type="text/javascript" th:src="@{/myjs/users.js}"></script> -->
+
+</body>
+
+</html>

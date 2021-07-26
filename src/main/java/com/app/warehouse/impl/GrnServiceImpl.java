@@ -34,7 +34,7 @@ public class GrnServiceImpl implements IGrnService {
 
 	@Override
 	public Grn getOneGrn(Integer id) {
-		return repository.findById(id).orElseThrow(() -> new DataNotFoundException("GRN not Exit:"));
+		return repository.findById(id).orElseThrow(() -> new DataNotFoundException("GRN Not Exit:" + id));
 	}
 
 	@Override
