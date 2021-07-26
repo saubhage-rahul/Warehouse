@@ -111,21 +111,21 @@ class WarehouseApplicationTests {
 		}
 	}
 
-	@Test
-	public void testdeleteUom() throws Exception {
-
-		log.info("Inside testdeleteUom():");
-
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete("/rest/api/uom/delete/{id}", 202);
-
-		MvcResult result = mockMvc.perform(request).andReturn();
-
-		MockHttpServletResponse response = result.getResponse();
-
-		assertEquals(HttpStatus.OK.value(), response.getStatus());
-
-		if (!response.getContentAsString().contains("Deleted")) {
-			fail("Uom is not Deleted:");
-		}
-	}
+	/*
+	 * @Test public void testdeleteUom() throws Exception {
+	 * 
+	 * log.info("Inside testdeleteUom():");
+	 * 
+	 * MockHttpServletRequestBuilder request =
+	 * MockMvcRequestBuilders.delete("/rest/api/uom/delete/{id}", 202);
+	 * 
+	 * MvcResult result = mockMvc.perform(request).andReturn();
+	 * 
+	 * MockHttpServletResponse response = result.getResponse();
+	 * 
+	 * assertEquals(HttpStatus.OK.value(), response.getStatus());
+	 * 
+	 * if (!response.getContentAsString().contains("Deleted")) {
+	 * fail("Uom is not Deleted:"); } }
+	 */
 }
