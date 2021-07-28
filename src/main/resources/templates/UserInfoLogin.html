@@ -46,12 +46,13 @@
 					<button type="submit" class="btn btn-success">Login</button>
 
 				</form>
-				<a th:href="@{/user/showForgot}">Forgot Password!!</a>
+				<a th:href="@{/user/showForgot}">Forgot Password!!</a> | <a
+					th:href="@{/user/showUserActiveOtp}">Self Activate!!</a>
 			</div>
 			<!-- card body end -->
 			<div class="card-footer text-center">
 				<span th:if="${param.error}" class="text-danger">User details
-					not found</span> <span th:if="${param.logout}" class="text-success">User
+					not found/Inactive</span> <span th:if="${param.logout}" class="text-success">User
 					logout success</span>
 			</div>
 			<!--  footer end -->

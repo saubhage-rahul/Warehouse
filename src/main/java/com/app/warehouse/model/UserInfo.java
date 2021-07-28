@@ -25,6 +25,7 @@ public class UserInfo {
 	private String name;
 	private String email;
 	private String password;
+	private String otp;
 
 	@Enumerated(EnumType.STRING)
 	private UserMode mode = UserMode.DISABLED;

@@ -54,11 +54,14 @@ public class UserInfoController {
 	public String saveUser(@ModelAttribute UserInfo userInfo, Model model) {
 
 		String pwd = MyAppUtil.generatePassword();
+		String otp = MyAppUtil.generateOTP();
+
 		userInfo.setPassword(pwd);
+		userInfo.setOtp(otp);
 
 		Integer id = service.saveUserInfo(userInfo);
 		if (id != 0) {
-			String text = " UserName " + userInfo.getEmail() + " password " + pwd + ",Roles are "
+			String text = " UserName " + userInfo.getEmail() + ",password " + pwd + ", OTP " + otp + ", Roles are "
 					+ UserInfoUtil.getRolesAsString(userInfo.getRoles());
 
 			System.out.println(text);
@@ -179,5 +182,30 @@ public class UserInfoController {
 
 		// back to profile page
 		return "redirect:profile";
+	}
+
+	// Show User Activation by OTP
+	@GetMapping("/showUserActiveOtp")
+	public String showUserActiveOtp() {
+		return "UserInfoActiveOtp";
+	}
+
+	@PostMapping("/doUserActiveOtp")
+	public String doUserActiveOTP(@RequestParam String username, @RequestParam String otp, Model model) {
+
+		// check given emailId/un exist in DB or not?
+		Optional<UserInfo> opt = service.getOneUserInfoByEmail(username);
+		if (opt.isPresent()) {
+			UserInfo user = opt.get();
+			if (!otp.equals(user.getOtp())) {
+				model.addAttribute("message", "Invalid OTP!");
+			} else {
+				service.updateUserStatus(user.getId(), UserMode.ENABLED);
+				model.addAttribute("message", "User is Active,You can Login!!!!!");
+			}
+		} else {
+			model.addAttribute("message", "User Not Exist!");
+		}
+		return "UserInfoActiveOtp";
 	}
 }

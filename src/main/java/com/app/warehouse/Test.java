@@ -1,15 +1,15 @@
 package com.app.warehouse;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.Random;
 
 public class Test {
 	public static void main(String[] args) {
 
-		String pwd = "SAMPLE";
-
-		BCryptPasswordEncoder pwdEnc = new BCryptPasswordEncoder();
-		String encPwd = pwdEnc.encode(pwd);
-		System.out.println(encPwd);
-
+		Random rob = new Random();
+		// 0---999999
+		int nextInt = rob.nextInt(999999);
+		System.out.println(nextInt);
+		String otp = String.format("%06d", nextInt);
+		System.out.println(otp);
 	}
 }
