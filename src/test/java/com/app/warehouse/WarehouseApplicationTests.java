@@ -31,7 +31,6 @@ class WarehouseApplicationTests {
 	private MockMvc mockMvc;
 
 	@Test
-	@Disabled
 	public void testSaveUom() throws Exception {
 
 		log.info("Inside testSaveUom():");
@@ -56,7 +55,6 @@ class WarehouseApplicationTests {
 	}
 
 	@Test
-	@Disabled
 	public void testUomAll() throws Exception {
 		log.info("Inside testUomAll():");
 
@@ -72,7 +70,6 @@ class WarehouseApplicationTests {
 	}
 
 	@Test
-	@Disabled
 	public void testGetOneUom() throws Exception {
 		log.info("Inside testGetOneUom():");
 
@@ -88,7 +85,6 @@ class WarehouseApplicationTests {
 	}
 
 	@Test
-	@Disabled
 	public void testUomUpdate() throws Exception {
 
 		log.info("Inside testUomUpdate():");
