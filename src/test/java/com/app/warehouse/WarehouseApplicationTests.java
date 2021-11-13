@@ -31,6 +31,7 @@ class WarehouseApplicationTests {
 	private MockMvc mockMvc;
 
 	@Test
+	@Disabled
 	public void testSaveUom() throws Exception {
 
 		log.info("Inside testSaveUom():");
